@@ -1,5 +1,14 @@
 ;;; lsp-pyright.el --- description -*- lexical-binding: t; -*-
-;;
+
+;; Copyright (C) 2020 emacs-lsp maintainers
+
+;; Author: Arif Rezai, Vincent Zhang, Andrew Christianson
+;; Version: 0.1.0
+;; Package-Requires: ((emacs "26.1") (lsp-mode "7.0") (dash "2.14.1") (ht "2.0"))
+;; Homepage: https://github.com/emacs-lsp/lsp-pyright
+;; Keywords: languages, tools, lsp
+
+
 ;; This file is not part of GNU Emacs
 
 ;; This file is free software; you can redistribute it and/or modify
@@ -34,20 +43,17 @@
 (defcustom lsp-pyright-langserver-command-args '("--stdio")
   "Command to start pyright-langserver."
   :type '(repeat string)
-  :group 'lsp-pyright
-  :package-version '(lsp-mode . "7.0.1"))
+  :group 'lsp-pyright)
 
 (defcustom lsp-pyright-disable-language-services nil
   "Disables all language services except for \"hover\"."
   :type 'boolean
-  :group 'lsp-pyright
-  :package-version '(lsp-mode . "7.0.1"))
+  :group 'lsp-pyright)
 
 (defcustom lsp-pyright-disable-organize-imports nil
   "Disables the \"Organize Imports\" command."
   :type 'boolean
-  :group 'lsp-pyright
-  :package-version '(lsp-mode . "7.0.1"))
+  :group 'lsp-pyright)
 
 (defcustom lsp-pyright-use-library-code-for-types nil
   "Determines whether pyright reads, parses and analyzes library code to
@@ -55,8 +61,7 @@ extract type information in the absence of type stub files.
 This can add significant overhead and may result in poor-quality type information.
 The default value for this option is false."
   :type 'boolean
-  :group 'lsp-pyright
-  :package-version '(lsp-mode . "7.0.1"))
+  :group 'lsp-pyright)
 
 (defcustom lsp-pyright-diagnostic-mode "openFilesOnly"
   "Determines whether pyright analyzes (and reports errors for) all files
@@ -65,8 +70,7 @@ If this option is set to \"openFilesOnly\", pyright analyzes only open files."
   :type '(choice
           (const "openFilesOnly")
           (const "workspace"))
-  :group 'lsp-pyright
-  :package-version '(lsp-mode . "7.0.1"))
+  :group 'lsp-pyright)
 
 (defcustom lsp-pyright-typechecking-mode "basic"
   "Determines the default type-checking level used by pyright.
@@ -75,8 +79,7 @@ This can be overridden in the configuration file"
           (const "off")
           (const "basic")
           (const "strict"))
-  :group 'lsp-pyright
-  :package-version '(lsp-mode . "7.0.1"))
+  :group 'lsp-pyright)
 
 (defcustom lsp-pyright-log-level "info"
   "Determines the default type-checking level used by pyright.
@@ -86,15 +89,13 @@ This can be overridden in the configuration file"
           (const "warning")
           (const "info")
           (const "trace"))
-  :group 'lsp-pyright
-  :package-version '(lsp-mode . "7.0.1"))
+  :group 'lsp-pyright)
 
 (defcustom lsp-pyright-auto-search-paths t
   "Determines whether pyright automatically adds common search paths like \"src\"
 if there are no execution environments defined in the config file."
   :type 'boolean
-  :group 'lsp-pyright
-  :package-version '(lsp-mode . "7.0.1"))
+  :group 'lsp-pyright)
 
 ;; taken from lsp-python-ms
 (defcustom lsp-pyright-python-executable-cmd "python"
@@ -105,8 +106,7 @@ e.g, there are `python2' and `python3', both in system PATH,
 and the default `python' links to python2,
 set as `python3' to let ms-pyls use python 3 environments."
   :type 'string
-  :group 'lsp-python-ms
-  :package-version '(lsp-mode . "7.0.1"))
+  :group 'lsp-python-ms)
 
 ;; taken from lsp-python-ms
 (defun lsp-pyright-locate-python ()
