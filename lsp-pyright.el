@@ -1,4 +1,4 @@
-;;; lsp-pyright.el --- description -*- lexical-binding: t; -*-
+;;; lsp-pyright.el --- Python LSP client using Pyright -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2020 emacs-lsp maintainers
 
