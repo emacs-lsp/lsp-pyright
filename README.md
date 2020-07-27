@@ -1,4 +1,7 @@
 # lsp-pyright
+
+[![Build Status](https://travis-ci.com/emacs-lsp/lsp-pyright.svg?branch=master)](https://travis-ci.com/emacs-lsp/lsp-pyright)
+
 lsp-mode client leveraging [Pyright language server](https://github.com/microsoft/pyright)
 
 ### Quickstart
