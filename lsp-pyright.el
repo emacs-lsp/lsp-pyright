@@ -97,6 +97,11 @@ if there are no execution environments defined in the config file."
   :type 'boolean
   :group 'lsp-pyright)
 
+(defcustom lsp-pyright-multi-root t
+  "If non nil, lsp-pyright will be started in multi-root mode."
+  :type 'boolean
+  :group 'lsp-pyright)
+
 ;; taken from lsp-python-ms
 (defcustom lsp-pyright-python-executable-cmd "python"
   "Command to specify the Python command for the Microsoft Python Language Server.
@@ -161,7 +166,7 @@ set as `python3' to let ms-pyls use python 3 environments."
                                                 lsp-pyright-langserver-command-args)))
   :major-modes '(python-mode)
   :server-id 'pyright
-  :multi-root t
+  :multi-root lsp-pyright-multi-root
   :priority 3
   :initialization-options (lambda () (ht-merge (lsp-configuration-section "pyright")
                                                (lsp-configuration-section "python")))
