@@ -108,7 +108,6 @@ if there are no execution environments defined in the config file."
   :type 'boolean
   :group 'lsp-pyright)
 
-;; taken from lsp-python-ms
 (defcustom lsp-pyright-python-executable-cmd "python"
   "Command to specify the Python command for the Microsoft Python Language Server.
 Similar to the `python-shell-interpreter', but used only with mspyls.
@@ -117,22 +116,16 @@ e.g, there are `python2' and `python3', both in system PATH,
 and the default `python' links to python2,
 set as `python3' to let ms-pyls use python 3 environments."
   :type 'string
-  :group 'lsp-python-ms)
-
-(defcustom lsp-pyright-venv nil
-  "Path to folder with subdirectories that contain virtual environments."
-  :type 'string
-  :group 'lsp-python-ms)
-
-(defun lsp-pyright-locate-venv ()
-  "Look for virtual environments local to the workspace."
-  (or lsp-pyright-venv
-      (concat (locate-dominating-file default-directory "venv/") "venv")))
+  :group 'lsp-pyright)
 
 (defun lsp-pyright-locate-python ()
-  "Look for python executable cmd to the workspace."
-  (or (executable-find (f-expand "bin/python" (lsp-pyright-locate-venv)))
-      (executable-find lsp-pyright-python-executable-cmd)))
+  "Look for virtual environments local to the workspace"
+  (let* ((venv (locate-dominating-file default-directory "venv/"))
+         (sys-python (executable-find lsp-pyright-python-executable-cmd))
+         (venv-python (f-expand "venv/bin/python" venv)))
+    (cond
+     ((and venv (f-executable? venv-python)) venv-python)
+     (sys-python))))
 
 (defun lsp-pyright--begin-progress-callback (workspace &rest _)
   (with-lsp-workspace workspace
@@ -164,8 +157,7 @@ set as `python3' to let ms-pyls use python 3 environments."
    ("python.analysis.logLevel" lsp-pyright-log-level)
    ("python.analysis.autoSearchPaths" lsp-pyright-auto-search-paths)
    ("python.analysis.extraPaths" lsp-pyright-extra-paths)
-   ("python.pythonPath" lsp-pyright-locate-python)
-   ("python.venvPath" lsp-pyright-locate-venv)))
+   ("python.pythonPath" lsp-pyright-locate-python)))
 
 (lsp-dependency 'pyright
                 '(:system "pyright-langserver")
