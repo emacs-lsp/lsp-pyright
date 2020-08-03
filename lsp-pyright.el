@@ -22,7 +22,7 @@
 ;; GNU General Public License for more details.
 
 ;; For a full copy of the GNU General Public License
-;; see <http://www.gnu.org/licenses/>.
+;; see <https://www.gnu.org/licenses/>.
 ;;
 ;;; Commentary:
 ;;
@@ -56,15 +56,17 @@
   :group 'lsp-pyright)
 
 (defcustom lsp-pyright-use-library-code-for-types nil
-  "Determines whether pyright reads, parses and analyzes library code to
-extract type information in the absence of type stub files.
-This can add significant overhead and may result in poor-quality type information.
+  "Determines whether to analyze library code.
+In order to extract type information in the absence of type stub files.
+This can add significant overhead and may result in
+poor-quality type information.
 The default value for this option is false."
   :type 'boolean
   :group 'lsp-pyright)
 
 (defcustom lsp-pyright-diagnostic-mode "openFilesOnly"
-  "Determines whether pyright analyzes (and reports errors for) all files
+  "Determines pyright diagnostic mode.
+Whether pyright analyzes (and reports errors for) all files
 in the workspace, as indicated by the config file.
 If this option is set to \"openFilesOnly\", pyright analyzes only open files."
   :type '(choice
@@ -92,8 +94,8 @@ This can be overridden in the configuration file"
   :group 'lsp-pyright)
 
 (defcustom lsp-pyright-auto-search-paths t
-  "Determines whether pyright automatically adds common search paths like \"src\"
-if there are no execution environments defined in the config file."
+  "Determines whether pyright automatically adds common search paths.
+i.e: Paths like \"src\" if there are no execution environments defined in the config file."
   :type 'boolean
   :group 'lsp-pyright)
 
@@ -109,7 +111,7 @@ if there are no execution environments defined in the config file."
   :group 'lsp-pyright)
 
 (defcustom lsp-pyright-python-executable-cmd "python"
-  "Command to specify the Python command for the Microsoft Python Language Server.
+  "Command to specify the Python command for pyright.
 Similar to the `python-shell-interpreter', but used only with mspyls.
 Useful when there are multiple python versions in system.
 e.g, there are `python2' and `python3', both in system PATH,
@@ -119,7 +121,7 @@ set as `python3' to let ms-pyls use python 3 environments."
   :group 'lsp-pyright)
 
 (defun lsp-pyright-locate-python ()
-  "Look for virtual environments local to the workspace"
+  "Look for virtual environments local to the workspace."
   (let* ((venv (locate-dominating-file default-directory "venv/"))
          (sys-python (executable-find lsp-pyright-python-executable-cmd))
          (venv-python (f-expand "venv/bin/python" venv)))
@@ -128,6 +130,8 @@ set as `python3' to let ms-pyls use python 3 environments."
      (sys-python))))
 
 (defun lsp-pyright--begin-progress-callback (workspace &rest _)
+  "Log begin progress information.
+Current LSP WORKSPACE should be passed in."
   (with-lsp-workspace workspace
     (--each (lsp--workspace-buffers workspace)
       (when (buffer-live-p it)
@@ -136,11 +140,14 @@ set as `python3' to let ms-pyls use python 3 environments."
   (lsp--info "Pyright language server is analyzing..."))
 
 (defun lsp-pyright--report-progress-callback (_workspace params)
-  "Log progress information."
+  "Log report progress information.
+First element of PARAMS will be passed into lsp-log"
   (when (and (arrayp params) (> (length params) 0))
     (lsp-log (aref params 0))))
 
 (defun lsp-pyright--end-progress-callback (workspace &rest _)
+  "Log end progress information.
+Current LSP WORKSPACE should be passed in."
   (with-lsp-workspace workspace
     (--each (lsp--workspace-buffers workspace)
       (when (buffer-live-p it)
