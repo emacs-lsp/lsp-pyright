@@ -25,5 +25,6 @@ lsp-mode client leveraging [Pyright language server](https://github.com/microsof
 - `python.analysis.typeCheckingMode` via `lsp-pyright-typechecking-mode`
 - `python.analysis.logLevel` via `lsp-pyright-log-level`
 - `python.analysis.autoSearchPaths` via `lsp-pyright-auto-search-paths`
+- `python.analysis.extraPaths` via `lsp-pyright-extra-paths`
 
 Projects can be further configured using `prightconfig.json` file. For further details please see [Pyright Configuration](https://github.com/microsoft/pyright/blob/master/docs/configuration.md).

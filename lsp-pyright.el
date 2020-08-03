@@ -3,7 +3,7 @@
 ;; Copyright (C) 2020 emacs-lsp maintainers
 
 ;; Author: Arif Rezai, Vincent Zhang, Andrew Christianson
-;; Version: 0.1.0
+;; Version: 0.2.0
 ;; Package-Requires: ((emacs "26.1") (lsp-mode "7.0") (dash "2.14.1") (ht "2.0"))
 ;; Homepage: https://github.com/emacs-lsp/lsp-pyright
 ;; Keywords: languages, tools, lsp
@@ -97,12 +97,17 @@ if there are no execution environments defined in the config file."
   :type 'boolean
   :group 'lsp-pyright)
 
+(defcustom lsp-pyright-extra-paths []
+  "Paths to add to the default execution environment extra paths if there are no execution environments defined in the config file."
+  :type 'lsp-string-vector
+  :group 'lsp-pyright)
+(make-variable-buffer-local 'lsp-pyright-extra-paths)
+
 (defcustom lsp-pyright-multi-root t
   "If non nil, lsp-pyright will be started in multi-root mode."
   :type 'boolean
   :group 'lsp-pyright)
 
-;; taken from lsp-python-ms
 (defcustom lsp-pyright-python-executable-cmd "python"
   "Command to specify the Python command for the Microsoft Python Language Server.
 Similar to the `python-shell-interpreter', but used only with mspyls.
@@ -111,9 +116,8 @@ e.g, there are `python2' and `python3', both in system PATH,
 and the default `python' links to python2,
 set as `python3' to let ms-pyls use python 3 environments."
   :type 'string
-  :group 'lsp-python-ms)
+  :group 'lsp-pyright)
 
-;; taken from lsp-python-ms
 (defun lsp-pyright-locate-python ()
   "Look for virtual environments local to the workspace"
   (let* ((venv (locate-dominating-file default-directory "venv/"))
@@ -152,6 +156,7 @@ set as `python3' to let ms-pyls use python 3 environments."
    ("python.analysis.typeCheckingMode" lsp-pyright-typechecking-mode)
    ("python.analysis.logLevel" lsp-pyright-log-level)
    ("python.analysis.autoSearchPaths" lsp-pyright-auto-search-paths)
+   ("python.analysis.extraPaths" lsp-pyright-extra-paths)
    ("python.pythonPath" lsp-pyright-locate-python)))
 
 (lsp-dependency 'pyright
