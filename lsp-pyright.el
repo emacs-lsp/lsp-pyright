@@ -100,8 +100,8 @@ i.e: Paths like \"src\" if there are no execution environments defined in the co
   :group 'lsp-pyright)
 
 (defcustom lsp-pyright-extra-paths []
-  "Paths to add to the default execution environment extra paths if there are no
-execution environments defined in the config file."
+  "Paths to add to the default execution environment extra paths.
+If there are no execution environments defined in the config file."
   :type 'lsp-string-vector
   :group 'lsp-pyright)
 (make-variable-buffer-local 'lsp-pyright-extra-paths)
@@ -142,7 +142,7 @@ Current LSP WORKSPACE should be passed in."
 
 (defun lsp-pyright--report-progress-callback (_workspace params)
   "Log report progress information.
-First element of PARAMS will be passed into lsp-log"
+First element of PARAMS will be passed into `lsp-log'."
   (when (and (arrayp params) (> (length params) 0))
     (lsp-log (aref params 0))))
 
