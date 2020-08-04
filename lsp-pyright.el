@@ -182,7 +182,7 @@ Current LSP WORKSPACE should be passed in."
   :multi-root lsp-pyright-multi-root
   :priority 3
   :initialization-options (lambda () (ht-merge (lsp-configuration-section "pyright")
-                                               (lsp-configuration-section "python")))
+                                          (lsp-configuration-section "python")))
   :initialized-fn (lambda (workspace)
                     (with-lsp-workspace workspace
                       (lsp--set-configuration
