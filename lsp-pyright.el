@@ -100,7 +100,8 @@ i.e: Paths like \"src\" if there are no execution environments defined in the co
   :group 'lsp-pyright)
 
 (defcustom lsp-pyright-extra-paths []
-  "Paths to add to the default execution environment extra paths if there are no execution environments defined in the config file."
+  "Paths to add to the default execution environment extra paths if there are no
+execution environments defined in the config file."
   :type 'lsp-string-vector
   :group 'lsp-pyright)
 (make-variable-buffer-local 'lsp-pyright-extra-paths)
@@ -156,9 +157,9 @@ Current LSP WORKSPACE should be passed in."
     (lsp--info "Pyright language server is analyzing...done")))
 
 (lsp-register-custom-settings
- `(("pyright.disableLanguageServices" lsp-pyright-disable-language-services)
-   ("pyright.disableOrganizeImports" lsp-pyright-disable-organize-imports)
-   ("python.analysis.useLibraryCodeForTypes" lsp-pyright-use-library-code-for-types)
+ `(("pyright.disableLanguageServices" lsp-pyright-disable-language-services t)
+   ("pyright.disableOrganizeImports" lsp-pyright-disable-organize-imports t)
+   ("python.analysis.useLibraryCodeForTypes" lsp-pyright-use-library-code-for-types t)
    ("python.analysis.diagnosticMode" lsp-pyright-diagnostic-mode)
    ("python.analysis.typeCheckingMode" lsp-pyright-typechecking-mode)
    ("python.analysis.logLevel" lsp-pyright-log-level)
