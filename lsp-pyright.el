@@ -163,7 +163,7 @@ Current LSP WORKSPACE should be passed in."
    ("python.analysis.diagnosticMode" lsp-pyright-diagnostic-mode)
    ("python.analysis.typeCheckingMode" lsp-pyright-typechecking-mode)
    ("python.analysis.logLevel" lsp-pyright-log-level)
-   ("python.analysis.autoSearchPaths" lsp-pyright-auto-search-paths)
+   ("python.analysis.autoSearchPaths" lsp-pyright-auto-search-paths t)
    ("python.analysis.extraPaths" lsp-pyright-extra-paths)
    ("python.pythonPath" lsp-pyright-locate-python)))
 
