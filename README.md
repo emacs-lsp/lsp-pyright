@@ -23,11 +23,14 @@ lsp-mode client leveraging [Pyright language server](https://github.com/microsof
 
 - `pyright.disableLanguageServices` via `lsp-pyright-disable-language-services`
 - `pyright.disableOrganizeImports` via `lsp-pyright-disable-organize-imports`
+- `python.analysis.autoImportCompletions` via `lsp-pyright-auto-import-completions`
 - `python.analysis.useLibraryCodeForTypes` via `lsp-pyright-use-library-code-for-types`
+- `python.analysis.typeshedPaths` via `lsp-pyright-typeshed-paths`
 - `python.analysis.diagnosticMode` via `lsp-pyright-diagnostic-mode`
 - `python.analysis.typeCheckingMode` via `lsp-pyright-typechecking-mode`
 - `python.analysis.logLevel` via `lsp-pyright-log-level`
 - `python.analysis.autoSearchPaths` via `lsp-pyright-auto-search-paths`
 - `python.analysis.extraPaths` via `lsp-pyright-extra-paths`
+- `python.venvPath` via `lsp-pyright-venv-path`
 
 Projects can be further configured using `prightconfig.json` file. For further details please see [Pyright Configuration](https://github.com/microsoft/pyright/blob/master/docs/configuration.md).
