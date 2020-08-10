@@ -1,6 +1,5 @@
 # lsp-pyright
 
-<!-- [![MELPA](https://melpa.org/packages/lsp-pyright-badge.svg)](https://melpa.org/#/lsp-pyright) -->
 [![Build Status](https://github.com/emacs-lsp/lsp-pyright/workflows/CI/badge.svg?branch=master)](https://github.com/emacs-lsp/lsp-pyright/actions)
 [![MELPA](https://melpa.org/packages/lsp-pyright-badge.svg)](https://melpa.org/#/lsp-pyright)
 [![License](http://img.shields.io/:license-gpl3-blue.svg)](LICENSE)
