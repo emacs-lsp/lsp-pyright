@@ -55,7 +55,7 @@
   :type 'boolean
   :group 'lsp-pyright)
 
-(defcustom lsp-pyright-use-library-code-for-types nil
+(defcustom lsp-pyright-use-library-code-for-types t
   "Determines whether to analyze library code.
 In order to extract type information in the absence of type stub files.
 This can add significant overhead and may result in
@@ -106,6 +106,28 @@ If there are no execution environments defined in the config file."
   :group 'lsp-pyright)
 (make-variable-buffer-local 'lsp-pyright-extra-paths)
 
+(defcustom lsp-pyright-auto-import-completions t
+  "Determines whether pyright offers auto-import completions."
+  :type 'boolean
+  :group 'lsp-pyright)
+
+(defcustom lsp-pyright-stub-path ""
+  "Path to directory containing custom type stub files."
+  :type 'string
+  :group 'lsp-pyright)
+
+(defcustom lsp-pyright-venv-path nil
+  "Path to folder with subdirectories that contain virtual environments.
+Virtual Envs specified in pyrightconfig.json will be looked up in this path."
+  :type 'string
+  :group 'lsp-pyright)
+
+(defcustom lsp-pyright-typeshed-paths []
+  "Paths to look for typeshed modules.
+Pyright currently honors only the first path in the array."
+  :type 'lsp-string-vector
+  :group 'lsp-pyright)
+
 (defcustom lsp-pyright-multi-root t
   "If non nil, lsp-pyright will be started in multi-root mode."
   :type 'boolean
@@ -121,14 +143,18 @@ set as `python3' to let ms-pyls use python 3 environments."
   :type 'string
   :group 'lsp-pyright)
 
-(defun lsp-pyright-locate-python ()
+(defun lsp-pyright-locate-venv ()
   "Look for virtual environments local to the workspace."
-  (let* ((venv (locate-dominating-file default-directory "venv/"))
-         (sys-python (executable-find lsp-pyright-python-executable-cmd))
-         (venv-python (f-expand "venv/bin/python" venv)))
-    (cond
-     ((and venv (f-executable? venv-python)) venv-python)
-     (sys-python))))
+  (or lsp-pyright-venv-path
+      (-when-let (venv-base-directory (locate-dominating-file default-directory "venv/"))
+        (concat venv-base-directory "venv"))
+      (-when-let (venv-base-directory (locate-dominating-file default-directory ".venv/"))
+        (concat venv-base-directory ".venv"))))
+
+(defun lsp-pyright-locate-python ()
+  "Look for python executable cmd to the workspace."
+  (or (executable-find (f-expand "bin/python" (lsp-pyright-locate-venv)))
+      (executable-find lsp-pyright-python-executable-cmd)))
 
 (defun lsp-pyright--begin-progress-callback (workspace &rest _)
   "Log begin progress information.
@@ -159,13 +185,18 @@ Current LSP WORKSPACE should be passed in."
 (lsp-register-custom-settings
  `(("pyright.disableLanguageServices" lsp-pyright-disable-language-services t)
    ("pyright.disableOrganizeImports" lsp-pyright-disable-organize-imports t)
+   ("python.analysis.autoImportCompletions" lsp-pyright-auto-import-completions t)
+   ("python.analysis.typeshedPaths" lsp-pyright-typeshed-paths)
+   ("python.analysis.stubPath" lsp-pyright-stub-path)
    ("python.analysis.useLibraryCodeForTypes" lsp-pyright-use-library-code-for-types t)
    ("python.analysis.diagnosticMode" lsp-pyright-diagnostic-mode)
    ("python.analysis.typeCheckingMode" lsp-pyright-typechecking-mode)
    ("python.analysis.logLevel" lsp-pyright-log-level)
    ("python.analysis.autoSearchPaths" lsp-pyright-auto-search-paths t)
    ("python.analysis.extraPaths" lsp-pyright-extra-paths)
-   ("python.pythonPath" lsp-pyright-locate-python)))
+   ("python.pythonPath" lsp-pyright-locate-python)
+   ;; We need to send empty string, otherwise  pyright-langserver fails with parse error
+   ("python.venvPath" (lambda () (or lsp-pyright-venv-path "")))))
 
 (lsp-dependency 'pyright
                 '(:system "pyright-langserver")
@@ -179,15 +210,14 @@ Current LSP WORKSPACE should be passed in."
                                                 lsp-pyright-langserver-command-args)))
   :major-modes '(python-mode)
   :server-id 'pyright
-  :multi-root lsp-pyright-multi-root
+  :multi-root (lambda () lsp-pyright-multi-root)
   :priority 3
-  :initialization-options (lambda () (ht-merge (lsp-configuration-section "pyright")
-                                          (lsp-configuration-section "python")))
   :initialized-fn (lambda (workspace)
                     (with-lsp-workspace workspace
+                      ;; we send empty settings initially, LSP server will ask for the
+                      ;; configuration of each workspace folder later separately
                       (lsp--set-configuration
-                       (ht-merge (lsp-configuration-section "pyright")
-                                 (lsp-configuration-section "python")))))
+                       (make-hash-table :test 'equal))))
   :download-server-fn (lambda (_client callback error-callback _update?)
                         (lsp-package-ensure 'pyright callback error-callback))
   :notification-handlers (lsp-ht ("pyright/beginProgress" 'lsp-pyright--begin-progress-callback)
