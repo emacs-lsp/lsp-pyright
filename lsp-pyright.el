@@ -116,11 +116,9 @@ If there are no execution environments defined in the config file."
   :type 'string
   :group 'lsp-pyright)
 
-(defcustom lsp-pyright-venv-path ""
+(defcustom lsp-pyright-venv-path nil
   "Path to folder with subdirectories that contain virtual environments.
-Virtual Envs specified in pyrightconfig.json will be looked up in
-this path.
-"
+Virtual Envs specified in pyrightconfig.json will be looked up in this path."
   :type 'string
   :group 'lsp-pyright)
 
@@ -145,14 +143,18 @@ set as `python3' to let ms-pyls use python 3 environments."
   :type 'string
   :group 'lsp-pyright)
 
-(defun lsp-pyright-locate-python ()
+(defun lsp-pyright-locate-venv ()
   "Look for virtual environments local to the workspace."
-  (let* ((venv (locate-dominating-file default-directory "venv/"))
-         (sys-python (executable-find lsp-pyright-python-executable-cmd))
-         (venv-python (f-expand "venv/bin/python" venv)))
-    (cond
-     ((and venv (f-executable? venv-python)) venv-python)
-     (sys-python))))
+  (or lsp-pyright-venv-path
+      (-when-let (venv-base-directory (locate-dominating-file default-directory "venv/"))
+        (concat venv-base-directory "venv"))
+      (-when-let (venv-base-directory (locate-dominating-file default-directory ".venv/"))
+        (concat venv-base-directory ".venv"))))
+
+(defun lsp-pyright-locate-python ()
+  "Look for python executable cmd to the workspace."
+  (or (executable-find (f-expand "bin/python" (lsp-pyright-locate-venv)))
+      (executable-find lsp-pyright-python-executable-cmd)))
 
 (defun lsp-pyright--begin-progress-callback (workspace &rest _)
   "Log begin progress information.
@@ -193,7 +195,8 @@ Current LSP WORKSPACE should be passed in."
    ("python.analysis.autoSearchPaths" lsp-pyright-auto-search-paths)
    ("python.analysis.extraPaths" lsp-pyright-extra-paths)
    ("python.pythonPath" lsp-pyright-locate-python)
-   ("python.venvPath" lsp-pyright-venv-path)))
+   ;; We need to send empty string, otherwise  pyright-langserver fails with parse error
+   ("python.venvPath" (lambda () (or lsp-pyright-venv-path "")))))
 
 (lsp-dependency 'pyright
                 '(:system "pyright-langserver")
