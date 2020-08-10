@@ -203,16 +203,6 @@ Current LSP WORKSPACE should be passed in."
                 '(:npm :package "pyright"
                        :path "pyright-langserver"))
 
-;; It additionally handles cases such as section is nested path. i.e: "python.analysis"
-(lsp-defun lsp-pyright--workspace-configuration (_workspace (&ConfigurationParams :items))
-  "Get section configuration.
-PARAMS are the `workspace/configuration' request params"
-  (->> items
-       (-map (-lambda ((&ConfigurationItem :section?))
-               (apply 'ht-get* (append (list (lsp-configuration-section section?))
-                                       (split-string section? "\\.")))))
-       (apply #'vector)))
-
 (lsp-register-client
  (make-lsp-client
   :new-connection (lsp-stdio-connection (lambda ()
@@ -228,7 +218,6 @@ PARAMS are the `workspace/configuration' request params"
                       ;; configuration of each workspace folder later separately
                       (lsp--set-configuration
                        (make-hash-table :test 'equal))))
-  :request-handlers (lsp-ht ("workspace/configuration" 'lsp-pyright--workspace-configuration))
   :download-server-fn (lambda (_client callback error-callback _update?)
                         (lsp-package-ensure 'pyright callback error-callback))
   :notification-handlers (lsp-ht ("pyright/beginProgress" 'lsp-pyright--begin-progress-callback)
