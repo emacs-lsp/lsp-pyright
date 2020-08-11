@@ -19,7 +19,7 @@ lsp-mode client leveraging [Pyright language server](https://github.com/microsof
 
 ### Configuration
 
-`lsp-pyright` supports the following configuration. Each configuration is descirbed in detail in [Pyright Settings](https://github.com/microsoft/pyright/blob/master/docs/settings.md).
+`lsp-pyright` supports the following configuration. Each configuration is described in detail in [Pyright Settings](https://github.com/microsoft/pyright/blob/master/docs/settings.md).
 
 - `pyright.disableLanguageServices` via `lsp-pyright-disable-language-services`
 - `pyright.disableOrganizeImports` via `lsp-pyright-disable-organize-imports`
