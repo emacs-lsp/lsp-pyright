@@ -154,7 +154,6 @@ set as `python3' to let ms-pyls use python 3 environments."
 (defun lsp-pyright-locate-python ()
   "Look for python executable cmd to the workspace."
   (or (executable-find (f-expand "bin/python" (lsp-pyright-locate-venv)))
-      (executable-find lsp-pyright-python-executable-cmd)
       (executable-find lsp-pyright-python-executable-cmd t)))
 
 (defun lsp-pyright--begin-progress-callback (workspace &rest _)
