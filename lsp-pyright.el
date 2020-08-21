@@ -143,6 +143,11 @@ set as `python3' to let ms-pyls use python 3 environments."
   :type 'string
   :group 'lsp-pyright)
 
+(defcustom lsp-pyright-prefer-remote-env t
+  "If non nil, lsp-pyright will perfer remote python environment."
+  :type 'boolean
+  :group 'lsp-pyright)
+
 (defun lsp-pyright-locate-venv ()
   "Look for virtual environments local to the workspace."
   (or lsp-pyright-venv-path
@@ -154,7 +159,7 @@ set as `python3' to let ms-pyls use python 3 environments."
 (defun lsp-pyright-locate-python ()
   "Look for python executable cmd to the workspace."
   (or (executable-find (f-expand "bin/python" (lsp-pyright-locate-venv)))
-      (executable-find lsp-pyright-python-executable-cmd t)))
+      (executable-find lsp-pyright-python-executable-cmd lsp-pyright-prefer-remote-env)))
 
 (defun lsp-pyright--begin-progress-callback (workspace &rest _)
   "Log begin progress information.
