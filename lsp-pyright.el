@@ -149,17 +149,19 @@ set as `python3' to let ms-pyls use python 3 environments."
   :group 'lsp-pyright)
 
 (defun lsp-pyright-locate-venv ()
-  "Look for virtual environments local to the workspace."
-  (or lsp-pyright-venv-path
-      (-when-let (venv-base-directory (locate-dominating-file default-directory "venv/"))
-        (concat venv-base-directory "venv"))
-      (-when-let (venv-base-directory (locate-dominating-file default-directory ".venv/"))
-        (concat venv-base-directory ".venv"))))
+"Look for virtual environments local to the workspace."
+(or lsp-pyright-venv-path
+    (-when-let (venv-base-directory (locate-dominating-file default-directory "venv/"))
+      (concat venv-base-directory "venv"))
+    (-when-let (venv-base-directory (locate-dominating-file default-directory ".venv/"))
+      (concat venv-base-directory ".venv"))))
 
 (defun lsp-pyright-locate-python ()
   "Look for python executable cmd to the workspace."
   (or (executable-find (f-expand "bin/python" (lsp-pyright-locate-venv)))
-      (executable-find lsp-pyright-python-executable-cmd lsp-pyright-prefer-remote-env)))
+      (if (>= emacs-major-version 27)
+          (executable-find lsp-pyright-python-executable-cmd lsp-pyright-prefer-remote-env)
+        (executable-find lsp-pyright-python-executable-cmd))))
 
 (defun lsp-pyright--begin-progress-callback (workspace &rest _)
   "Log begin progress information.
