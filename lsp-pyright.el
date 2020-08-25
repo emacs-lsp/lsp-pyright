@@ -215,7 +215,7 @@ Current LSP WORKSPACE should be passed in."
                                                 lsp-pyright-langserver-command-args)))
   :major-modes '(python-mode)
   :server-id 'pyright
-  :multi-root (lambda () lsp-pyright-multi-root)
+  :multi-root lsp-pyright-multi-root
   :priority 3
   :initialized-fn (lambda (workspace)
                     (with-lsp-workspace workspace
