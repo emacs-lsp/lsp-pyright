@@ -150,12 +150,12 @@ Only available in Emacs 27 and above."
   :group 'lsp-pyright)
 
 (defun lsp-pyright-locate-venv ()
-"Look for virtual environments local to the workspace."
-(or lsp-pyright-venv-path
-    (-when-let (venv-base-directory (locate-dominating-file default-directory "venv/"))
-      (concat venv-base-directory "venv"))
-    (-when-let (venv-base-directory (locate-dominating-file default-directory ".venv/"))
-      (concat venv-base-directory ".venv"))))
+  "Look for virtual environments local to the workspace."
+  (or lsp-pyright-venv-path
+      (-when-let (venv-base-directory (locate-dominating-file default-directory "venv/"))
+        (concat venv-base-directory "venv"))
+      (-when-let (venv-base-directory (locate-dominating-file default-directory ".venv/"))
+        (concat venv-base-directory ".venv"))))
 
 (defun lsp-pyright-locate-python ()
   "Look for python executable cmd to the workspace."
