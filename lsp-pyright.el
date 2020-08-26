@@ -76,7 +76,7 @@ If this option is set to \"openFilesOnly\", pyright analyzes only open files."
 
 (defcustom lsp-pyright-typechecking-mode "basic"
   "Determines the default type-checking level used by pyright.
-This can be overridden in the configuration file"
+This can be overridden in the configuration file."
   :type '(choice
           (const "off")
           (const "basic")
@@ -84,8 +84,8 @@ This can be overridden in the configuration file"
   :group 'lsp-pyright)
 
 (defcustom lsp-pyright-log-level "info"
-  "Determines the default type-checking level used by pyright.
-This can be overridden in the configuration file"
+  "Determines the default log level used by pyright.
+This can be overridden in the configuration file."
   :type '(choice
           (const "error")
           (const "warning")
