@@ -167,11 +167,13 @@ Only available in Emacs 27 and above."
 (defun lsp-pyright--begin-progress-callback (workspace &rest _)
   "Log begin progress information.
 Current LSP WORKSPACE should be passed in."
-  (with-lsp-workspace workspace
-    (--each (lsp--workspace-buffers workspace)
-      (when (buffer-live-p it)
-        (with-current-buffer it
-          (lsp--spinner-start)))))
+  (when lsp-progress-via-spinner
+    (with-lsp-workspace workspace
+      (--each (lsp--workspace-buffers workspace)
+	(when (buffer-live-p it)
+          (with-current-buffer it
+            (lsp--spinner-start)))))
+    )
   (lsp--info "Pyright language server is analyzing..."))
 
 (defun lsp-pyright--report-progress-callback (_workspace params)
@@ -183,12 +185,14 @@ First element of PARAMS will be passed into `lsp-log'."
 (defun lsp-pyright--end-progress-callback (workspace &rest _)
   "Log end progress information.
 Current LSP WORKSPACE should be passed in."
-  (with-lsp-workspace workspace
-    (--each (lsp--workspace-buffers workspace)
-      (when (buffer-live-p it)
-        (with-current-buffer it
-          (lsp--spinner-stop))))
-    (lsp--info "Pyright language server is analyzing...done")))
+  (when lsp-progress-via-spinner
+    (with-lsp-workspace workspace
+      (--each (lsp--workspace-buffers workspace)
+	(when (buffer-live-p it)
+          (with-current-buffer it
+            (lsp--spinner-stop)))))
+    )
+  (lsp--info "Pyright language server is analyzing...done"))
 
 (lsp-register-custom-settings
  `(("pyright.disableLanguageServices" lsp-pyright-disable-language-services t)
