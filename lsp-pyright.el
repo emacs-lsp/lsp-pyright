@@ -174,7 +174,7 @@ Current LSP WORKSPACE should be passed in."
           (with-current-buffer it
             (lsp--spinner-start)))))
     )
-  (lsp--info "Pyright language server is analyzing..."))
+  (lsp-log "Pyright language server is analyzing..."))
 
 (defun lsp-pyright--report-progress-callback (_workspace params)
   "Log report progress information.
@@ -192,7 +192,7 @@ Current LSP WORKSPACE should be passed in."
           (with-current-buffer it
             (lsp--spinner-stop)))))
     )
-  (lsp--info "Pyright language server is analyzing...done"))
+  (lsp-log "Pyright language server is analyzing...done"))
 
 (lsp-register-custom-settings
  `(("pyright.disableLanguageServices" lsp-pyright-disable-language-services t)
