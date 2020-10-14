@@ -149,6 +149,11 @@ Only available in Emacs 27 and above."
   :type 'boolean
   :group 'lsp-pyright)
 
+(defcustom lsp-pyright-show-analyzing t
+  "If non nil, lsp-pyright will notify in the minibuffer that it is running analysis."
+  :type 'boolean
+  :group 'lsp-pyright)
+
 (defun lsp-pyright-locate-venv ()
   "Look for virtual environments local to the workspace."
   (or lsp-pyright-venv-path
@@ -174,7 +179,8 @@ Current LSP WORKSPACE should be passed in."
           (with-current-buffer it
             (lsp--spinner-start)))))
     )
-  (lsp--info "Pyright language server is analyzing..."))
+  (when lsp-pyright-show-analyzing
+    (lsp--info "Pyright language server is analyzing...")))
 
 (defun lsp-pyright--report-progress-callback (_workspace params)
   "Log report progress information.
@@ -192,7 +198,8 @@ Current LSP WORKSPACE should be passed in."
           (with-current-buffer it
             (lsp--spinner-stop)))))
     )
-  (lsp--info "Pyright language server is analyzing...done"))
+  (when lsp-pyright-show-analyzing
+    (lsp--info "Pyright language server is analyzing...done")))
 
 (lsp-register-custom-settings
  `(("pyright.disableLanguageServices" lsp-pyright-disable-language-services t)
