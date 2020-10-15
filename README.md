@@ -33,4 +33,4 @@ lsp-mode client leveraging [Pyright language server](https://github.com/microsof
 - `python.analysis.extraPaths` via `lsp-pyright-extra-paths`
 - `python.venvPath` via `lsp-pyright-venv-path`
 
-Projects can be further configured using `prightconfig.json` file. For further details please see [Pyright Configuration](https://github.com/microsoft/pyright/blob/master/docs/configuration.md).
+Projects can be further configured using `pyrightconfig.json` file. For further details please see [Pyright Configuration](https://github.com/microsoft/pyright/blob/master/docs/configuration.md).
