@@ -16,32 +16,26 @@ jobs:
           - snapshot
 
     steps:
-    - name: setenv
-      run: echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> $GITHUB_ENV
+      - name: setenv
+        run: echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> $GITHUB_ENV
 
-    - uses: actions/checkout@v1
+      - uses: actions/checkout@v1
 
-    - uses: actions/setup-python@v1.1.1
-      with:
-        python-version: '3.6'
-        architecture: 'x64'
+      - uses: actions/setup-python@v1.1.1
+        with:
+          python-version: '3.6'
+          architecture: 'x64'
 
-    - uses: purcell/setup-emacs@master
-      with:
-        version: ${{ matrix.emacs-version }}
+      - uses: purcell/setup-emacs@master
+        with:
+          version: ${{ matrix.emacs-version }}
 
-    - uses: conao3/setup-cask@master
-      with:
-        version: 0.8.4
+      - uses: conao3/setup-cask@master
+        with:
+          version: 0.8.4
 
-    - name: install
-      run: 'cask install'
-
-    - name: build
-      run: 'cask build'
-
-    - name: package
-      run: 'cask package'
+      - name: Run tests
+        run: 'make unix-ci'
 
   windows-test:
     runs-on: windows-latest
