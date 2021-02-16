@@ -4,7 +4,7 @@
 
 ;; Author: Arif Rezai, Vincent Zhang, Andrew Christianson
 ;; Version: 0.2.0
-;; Package-Requires: ((emacs "26.1") (lsp-mode "7.0") (dash "2.14.1") (ht "2.0"))
+;; Package-Requires: ((emacs "26.1") (lsp-mode "7.0") (dash "2.18.0") (ht "2.0"))
 ;; Homepage: https://github.com/emacs-lsp/lsp-pyright
 ;; Keywords: languages, tools, lsp
 
@@ -170,7 +170,7 @@ Current LSP WORKSPACE should be passed in."
   (when lsp-progress-via-spinner
     (with-lsp-workspace workspace
       (--each (lsp--workspace-buffers workspace)
-	(when (buffer-live-p it)
+    (when (buffer-live-p it)
           (with-current-buffer it
             (lsp--spinner-start)))))
     )
@@ -188,7 +188,7 @@ Current LSP WORKSPACE should be passed in."
   (when lsp-progress-via-spinner
     (with-lsp-workspace workspace
       (--each (lsp--workspace-buffers workspace)
-	(when (buffer-live-p it)
+    (when (buffer-live-p it)
           (with-current-buffer it
             (lsp--spinner-stop)))))
     )
