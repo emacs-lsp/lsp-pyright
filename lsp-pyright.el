@@ -95,7 +95,8 @@ This can be overridden in the configuration file."
 
 (defcustom lsp-pyright-auto-search-paths t
   "Determines whether pyright automatically adds common search paths.
-i.e: Paths like \"src\" if there are no execution environments defined in the config file."
+i.e: Paths like \"src\" if there are no execution environments defined in the
+config file."
   :type 'boolean
   :group 'lsp-pyright)
 
