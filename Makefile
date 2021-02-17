@@ -49,4 +49,4 @@ windows-test:
 clean:
 	rm -rf .cask *.elc
 
-.PHONY: build ci unix-compile unix-test windows-compile windows-test clean
+.PHONY: build unix-ci windows-ci unix-compile unix-test windows-compile windows-test clean
