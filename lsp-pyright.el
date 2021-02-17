@@ -160,9 +160,10 @@ Only available in Emacs 27 and above."
 (defun lsp-pyright-locate-python ()
   "Look for python executable cmd to the workspace."
   (or (executable-find (f-expand "bin/python" (lsp-pyright-locate-venv)))
-      (if (>= emacs-major-version 27)
-          (executable-find lsp-pyright-python-executable-cmd lsp-pyright-prefer-remote-env)
-        (executable-find lsp-pyright-python-executable-cmd))))
+      (with-no-warnings
+        (if (>= emacs-major-version 27)
+            (executable-find lsp-pyright-python-executable-cmd lsp-pyright-prefer-remote-env)
+          (executable-find lsp-pyright-python-executable-cmd)))))
 
 (defun lsp-pyright--begin-progress-callback (workspace &rest _)
   "Log begin progress information.
