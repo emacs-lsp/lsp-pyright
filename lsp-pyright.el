@@ -156,6 +156,9 @@ Only available in Emacs 27 and above."
   :type 'list
   :group 'lsp-pyright)
 
+(defvar lsp-pyright--project-info-cache nil
+  "Used to cache results from project management tools between invocations.")
+
 (defun lsp-pyright--locate-pipenv ()
   "Get the path of the pipenv executable. If
   `lsp-pyright-pipenv-executable-cmd' is non-nil it will be
@@ -202,8 +205,7 @@ CMD does not return a failure status."
   "Queries poetry or pipenv for project information and returns
 either the virtualenv or the python interpreter of the project
 depending on whether the value of PROPERTY is 'python or 'venv."
-  (unless (and (boundp 'lsp-pyright--project-info-cache)
-               lsp-pyright--project-info-cache)
+  (unless lsp-pyright--project-info-cache
     (setq-local
      lsp-pyright--project-info-cache
      (let ((project-info
