@@ -123,6 +123,12 @@ Virtual Envs specified in pyrightconfig.json will be looked up in this path."
   :type 'string
   :group 'lsp-pyright)
 
+(defcustom lsp-pyright-venv-directory nil
+  "Folder with subdirectories that contain virtual environments.
+Virtual Envs specified in pyrightconfig.json will be looked up in this path."
+  :type 'string
+  :group 'lsp-pyright)
+
 (defcustom lsp-pyright-typeshed-paths []
   "Paths to look for typeshed modules.
 Pyright currently honors only the first path in the array."
@@ -153,6 +159,9 @@ Only available in Emacs 27 and above."
 (defun lsp-pyright-locate-venv ()
   "Look for virtual environments local to the workspace."
   (or lsp-pyright-venv-path
+      (and lsp-pyright-venv-directory
+           (-when-let (venv-base-directory (locate-dominating-file default-directory lsp-pyright-venv-directory))
+             (concat venv-base-directory lsp-pyright-venv-directory)))
       (-when-let (venv-base-directory (locate-dominating-file default-directory "venv/"))
         (concat venv-base-directory "venv"))
       (-when-let (venv-base-directory (locate-dominating-file default-directory ".venv/"))
