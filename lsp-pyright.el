@@ -231,10 +231,18 @@ Current LSP WORKSPACE should be passed in."
   :new-connection (lsp-stdio-connection (lambda ()
                                           (cons (lsp-package-path 'pyright)
                                                 lsp-pyright-langserver-command-args)))
-  :major-modes '(python-mode)
   :server-id 'pyright
   :multi-root lsp-pyright-multi-root
   :priority 3
+  :activation-fn (lambda (file-name mode)
+                   (and (or (not (null (string-match-p "py[iw]?" (file-name-extension file-name))))
+                            (eq mode 'python-mode))
+                        (or (locate-dominating-file file-name "pyrightconfig.json")
+                            (when-let ((pep518-config-file-dir (locate-dominating-file file-name "pyproject.toml")))
+                              (with-temp-buffer
+                                (insert-file-contents (concat pep518-config-file-dir "pyproject.toml"))
+                                (goto-char (point-min))
+                                (search-forward "[tool.pyright]" nil t nil))))))
   :initialized-fn (lambda (workspace)
                     (with-lsp-workspace workspace
                       ;; we send empty settings initially, LSP server will ask for the
