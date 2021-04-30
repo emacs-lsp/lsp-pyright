@@ -34,3 +34,12 @@ lsp-mode client leveraging [Pyright language server](https://github.com/microsof
 - `python.venvPath` via `lsp-pyright-venv-path`
 
 Projects can be further configured using `pyrightconfig.json` file. For further details please see [Pyright Configuration](https://github.com/microsoft/pyright/blob/master/docs/configuration.md).
+
+### FAQ
+
+#### Why don't I see a `pyright` server running in my project when I `M-x lsp-describe-session`?
+
+`lsp-pyright` is only activated when
+[configurated](https://github.com/microsoft/pyright/blob/master/docs/configuration.md)
+properly. So you either need to write a `pyrightconfig.json` file or a
+`[tool.pyright]` section your project's `pyproject.toml` file.
