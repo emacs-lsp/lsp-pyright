@@ -114,19 +114,19 @@ If there are no execution environments defined in the config file."
 
 (defcustom lsp-pyright-stub-path ""
   "Path to directory containing custom type stub files."
-  :type 'string
+  :type 'directory
   :group 'lsp-pyright)
 
 (defcustom lsp-pyright-venv-path nil
   "Path to folder with subdirectories that contain virtual environments.
 Virtual Envs specified in pyrightconfig.json will be looked up in this path."
-  :type '(choice (const :tag "None" nil) string)
+  :type '(choice (const :tag "None" nil) file)
   :group 'lsp-pyright)
 
 (defcustom lsp-pyright-venv-directory nil
   "Folder with subdirectories that contain virtual environments.
 Virtual Envs specified in pyrightconfig.json will be looked up in this path."
-  :type '(choice (const :tag "None" nil) string)
+  :type '(choice (const :tag "None" nil) directory)
   :group 'lsp-pyright)
 
 (defcustom lsp-pyright-typeshed-paths []
