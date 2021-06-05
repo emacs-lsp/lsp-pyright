@@ -4,7 +4,7 @@
 
 ;; Author: Arif Rezai, Vincent Zhang, Andrew Christianson
 ;; Version: 0.2.0
-;; Package-Requires: ((emacs "26.1") (lsp-mode "7.0") (dash "2.18.0") (ht "2.0"))
+;; Package-Requires: ((emacs "26.1") (lsp-mode "7.0") (dash "2.18.0") (ht "2.0") (f "0.20.0") (s "1.12.0"))
 ;; Homepage: https://github.com/emacs-lsp/lsp-pyright
 ;; Keywords: languages, tools, lsp
 
@@ -33,6 +33,8 @@
 (require 'lsp-mode)
 (require 'dash)
 (require 'ht)
+(require 's)
+(require 'f)
 
 ;; Group declaration
 (defgroup lsp-pyright nil
@@ -150,17 +152,113 @@ set as `python3' to let ms-pyls use python 3 environments."
   :type 'string
   :group 'lsp-pyright)
 
+(defcustom lsp-pyright-pipenv-executable-cmd nil
+  "Path to the pipenv executable. Will auto detect using
+`executable-find' if this is set to `nil'."
+  :type 'string
+  :group 'lsp-pyright)
+
+(defcustom lsp-pyright-poetry-executable-cmd nil
+  "Path to the poetry executable. Will auto detect using
+`executable-find' if this is set to `nil'."
+  :type 'string
+  :group 'lsp-pyright)
+
 (defcustom lsp-pyright-prefer-remote-env t
   "If non nil, lsp-pyright will perfer remote python environment.
 Only available in Emacs 27 and above."
   :type 'boolean
   :group 'lsp-pyright)
 
+(defvar lsp-pyright--project-info-cache nil
+  "Used to cache results from project management tools between invocations.")
+
+(defun lsp-pyright--locate-pipenv ()
+  "Get the path of the pipenv executable. If
+  `lsp-pyright-pipenv-executable-cmd' is non-nil it will be
+  returned. Otherwise, `exec-path' will be searched for a
+  executable named pipenv"
+  (or lsp-pyright-pipenv-executable-cmd
+      (executable-find "pipenv")))
+
+(defun lsp-pyright--locate-poetry ()
+  "Get the path of the poetry executable. If
+  `lsp-pyright-poetry-executable-cmd' is non-nil it will be
+  returned. Otherwise, `exec-path' will be searched for a
+  executable named poetry"
+  (or lsp-pyright-poetry-executable-cmd
+      (executable-find "poetry")))
+
+(defun lsp-pyright--call-process (&rest cmd)
+  "Wrapper around `call-process' which executes the command and
+arguments as given in CMD. Returns the output from CMD only if
+CMD does not return a failure status."
+  (with-temp-buffer
+    (let ((return-status
+           (apply #'call-process (car cmd) nil t nil (cdr cmd))))
+      (when (zerop return-status)
+        (s-trim (buffer-string))))))
+
+(defun lsp-pyright--locate-project-file (f)
+  "Checks if the file F exists in the current project."
+  (and (lsp-workspace-root)
+       (let ((projfile (f-join (lsp-workspace-root) f)))
+         (f-exists? projfile))))
+
+(defun lsp-pyright--project-is-pipenv ()
+  "Checks if pipenv is used for current project."
+  (and (lsp-pyright--locate-pipenv)
+   (lsp-pyright--locate-project-file "Pipfile")))
+
+(defun lsp-pyright--project-is-poetry ()
+  "Checks if pipenv is used for current project."
+  (and (lsp-pyright--locate-poetry)
+   (lsp-pyright--locate-project-file "pyproject.toml")))
+
+(defun lsp-pyright--project-info-from-tool (property)
+  "Queries poetry or pipenv for project information and returns
+either the virtualenv or the python interpreter of the project
+depending on whether the value of PROPERTY is 'python or 'venv."
+  (unless lsp-pyright--project-info-cache
+    (setq-local
+     lsp-pyright--project-info-cache
+     (let ((project-info
+            (cond
+             ((lsp-pyright--project-is-pipenv)
+              (if-let* ((pipenv (lsp-pyright--locate-pipenv))
+                        (venv (lsp-pyright--call-process pipenv "--venv"))
+                        (python (lsp-pyright--call-process pipenv "--py")))
+                  (progn
+                    (lsp-log "Detected pipenv project. Using: venv %s and python %s"
+                             venv python)
+                    `(:venv ,venv :python ,python))))
+             ((lsp-pyright--project-is-poetry)
+              (if-let* ((poetry (lsp-pyright--locate-poetry))
+                        (venv (lsp-pyright--call-process poetry "env" "info" "-p"))
+                        (python (f-join venv "bin" "python")))
+                  (progn
+                    (lsp-log "Detected poetry project. Using: venv %s and python %s"
+                             venv python)
+                    `(:venv ,venv :python ,python))))
+             (t (lsp-log "Project is not using poetry or pipenv.")))))
+       (and project-info
+            (plist-get project-info :python)
+            (plist-get project-info :venv)
+            project-info))))
+     (when lsp-pyright--project-info-cache
+       (pcase property
+         ('python (plist-get lsp-pyright--project-info-cache :python))
+         ('venv (plist-get lsp-pyright--project-info-cache :venv)))))
+
 (defun lsp-pyright-locate-venv ()
   "Look for virtual environments local to the workspace."
   (or lsp-pyright-venv-path
+      (lsp-pyright--project-info-from-tool 'venv)
       (and lsp-pyright-venv-directory
-           (-when-let (venv-base-directory (locate-dominating-file default-directory lsp-pyright-venv-directory))
+           (-when-let (venv-base-directory
+                       (locate-dominating-file
+                        default-directory
+                        lsp-pyright-venv-directory))
              (concat venv-base-directory lsp-pyright-venv-directory)))
       (-when-let (venv-base-directory (locate-dominating-file default-directory "venv/"))
         (concat venv-base-directory "venv"))
@@ -169,7 +267,7 @@ Only available in Emacs 27 and above."
 
 (defun lsp-pyright-locate-python ()
   "Look for python executable cmd to the workspace."
-  (or (executable-find (f-expand "bin/python" (lsp-pyright-locate-venv)))
+  (or (lsp-pyright--project-info-from-tool 'python)
       (with-no-warnings
         (if (>= emacs-major-version 27)
             (executable-find lsp-pyright-python-executable-cmd lsp-pyright-prefer-remote-env)
@@ -219,7 +317,7 @@ Current LSP WORKSPACE should be passed in."
    ("python.analysis.extraPaths" lsp-pyright-extra-paths)
    ("python.pythonPath" lsp-pyright-locate-python)
    ;; We need to send empty string, otherwise  pyright-langserver fails with parse error
-   ("python.venvPath" (lambda () (or lsp-pyright-venv-path "")))))
+   ("python.venvPath" (lambda () (or (lsp-pyright-locate-venv) "")))))
 
 (lsp-dependency 'pyright
                 '(:system "pyright-langserver")
