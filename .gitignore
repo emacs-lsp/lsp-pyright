@@ -10,4 +10,5 @@
 # Undo-tree save-files
 *.~undo-tree
 
+*.tmp
 flycheck*
