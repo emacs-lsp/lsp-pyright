@@ -60,7 +60,7 @@
 In order to extract type information in the absence of type stub files.
 This can add significant overhead and may result in
 poor-quality type information.
-The default value for this option is false."
+The default value for this option is true."
   :type 'boolean
   :group 'lsp-pyright)
 
