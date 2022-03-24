@@ -5,16 +5,16 @@ on: [push, pull_request]
 jobs:
   unix-test:
     runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.experimental }}
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
-        emacs-version:
-          - 26.1
-          - 26.2
-          - 26.3
-          - 27.1
-          - 27.2
-          - snapshot
+        emacs-version: [26.1, 26.2, 26.3, 27.1, 27.2]
+        experimental: [false]
+        include:
+          - emacs-version: snapshot
+            experimental: true
 
     steps:
       - name: setenv
@@ -40,14 +40,15 @@ jobs:
 
   windows-test:
     runs-on: windows-latest
+    continue-on-error: ${{ matrix.experimental }}
     strategy:
+      fail-fast: false
       matrix:
-        emacs-version:
-          - 26.1
-          - 26.2
-          - 26.3
-          - 27.1
-          - snapshot
+        emacs-version: [26.1, 26.2, 26.3, 27.1, 27.2]
+        experimental: [false]
+        include:
+          - emacs-version: snapshot
+            experimental: true
 
     steps:
       - name: setenv
