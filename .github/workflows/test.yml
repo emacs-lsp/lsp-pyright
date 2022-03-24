@@ -22,11 +22,6 @@ jobs:
 
       - uses: actions/checkout@v1
 
-      - uses: actions/setup-python@v1.1.1
-        with:
-          python-version: '3.6'
-          architecture: 'x64'
-
       - uses: purcell/setup-emacs@master
         with:
           version: ${{ matrix.emacs-version }}
@@ -37,33 +32,3 @@ jobs:
 
       - name: Run tests
         run: 'make unix-ci'
-
-  windows-test:
-    runs-on: windows-latest
-    continue-on-error: ${{ matrix.experimental }}
-    strategy:
-      fail-fast: false
-      matrix:
-        emacs-version: [26.1, 26.2, 26.3, 27.1, 27.2]
-        experimental: [false]
-        include:
-          - emacs-version: snapshot
-            experimental: true
-
-    steps:
-      - name: setenv
-        run: echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> $GITHUB_ENV
-
-      - uses: actions/checkout@v2
-
-      - uses: actions/setup-python@v2
-        with:
-          python-version: '3.6'
-          architecture: 'x64'
-
-      - uses: jcs090218/setup-emacs-windows@master
-        with:
-          version: ${{ matrix.emacs-version }}
-
-      - name: Run tests
-        run: 'make windows-ci'
