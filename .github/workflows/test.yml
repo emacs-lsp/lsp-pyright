@@ -29,5 +29,14 @@ jobs:
         with:
           version: 0.8.6
 
-      - name: Run tests
-        run: 'make unix-ci'
+      - name: install
+        run: 'cask install'
+
+      - name: test
+        run: 'cask exec ert-runner'
+
+      - name: build
+        run: 'cask build'
+
+      - name: package
+        run: 'cask package'
