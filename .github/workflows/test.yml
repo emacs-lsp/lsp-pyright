@@ -28,7 +28,7 @@ jobs:
 
       - uses: conao3/setup-cask@master
         with:
-          version: 0.8.4
+          version: 0.8.6
 
       - name: Run tests
         run: 'make unix-ci'
