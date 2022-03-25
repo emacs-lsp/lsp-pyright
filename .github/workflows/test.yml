@@ -3,13 +3,12 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  unix-test:
-    runs-on: ${{ matrix.os }}
+  test:
+    runs-on: unbuntu-lastest
     continue-on-error: ${{ matrix.experimental }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest]
         emacs-version: [26.1, 26.2, 26.3, 27.1, 27.2]
         experimental: [false]
         include:
