@@ -32,9 +32,6 @@ jobs:
       - name: install
         run: 'cask install'
 
-      - name: test
-        run: 'cask exec ert-runner'
-
       - name: build
         run: 'cask build'
 
