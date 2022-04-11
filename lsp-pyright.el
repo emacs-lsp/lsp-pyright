@@ -156,6 +156,15 @@ Only available in Emacs 27 and above."
   :type 'boolean
   :group 'lsp-pyright)
 
+(defcustom lsp-pyright-completion-auto-import-enable t
+  "Toggles the additional completions that automatically add imports when
+completed. `lsp-completion-enable-additional-text-edit' must be non-nil
+ for this feature to be fully enabled."
+  :type 'boolean
+  :group 'lsp-pyright)
+
+
+
 (defun lsp-pyright-locate-venv ()
   "Look for virtual environments local to the workspace."
   (or lsp-pyright-venv-path
@@ -199,11 +208,14 @@ Current LSP WORKSPACE should be passed in."
   (when lsp-progress-via-spinner
     (with-lsp-workspace workspace
       (--each (lsp--workspace-buffers workspace)
-    (when (buffer-live-p it)
+        (when (buffer-live-p it)
           (with-current-buffer it
-            (lsp--spinner-stop)))))
-    )
+            (lsp--spinner-stop))))))
   (lsp-log "Pyright language server is analyzing...done"))
+
+(defun lsp-pyright--make-init-options ()
+  "Initialize options for `pyright'."
+  `(:completion (:autoimport (:enable ,(lsp-json-bool lsp-pyright-completion-auto-import-enable)))))
 
 (lsp-register-custom-settings
  `(("pyright.disableLanguageServices" lsp-pyright-disable-language-services t)
@@ -235,6 +247,7 @@ Current LSP WORKSPACE should be passed in."
   :server-id 'pyright
   :multi-root lsp-pyright-multi-root
   :priority 3
+  :initialization-options 'lsp-pyright--make-init-options
   :initialized-fn (lambda (workspace)
                     (with-lsp-workspace workspace
                       ;; we send empty settings initially, LSP server will ask for the
