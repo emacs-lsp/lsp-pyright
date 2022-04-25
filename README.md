@@ -34,3 +34,18 @@ lsp-mode client leveraging [Pyright language server](https://github.com/microsof
 - `python.venvPath` via `lsp-pyright-venv-path`
 
 Projects can be further configured using `pyrightconfig.json` file. For further details please see [Pyright Configuration](https://github.com/microsoft/pyright/blob/master/docs/configuration.md).
+
+### Usage notes
+
+Pyright includes a recent copy of the Python stdlib type stubs. To add type stubs for additional libraries, customize `lsp-pyright-stub-path`, or place the appropriate type stubs in `typings` subdirectory of your project (this is the default stub path). Note that without stubs but with `lsp-pyright-use-library-code-for-types` non-nil, you may see type checking errors, particularly for complex libraries such as Pandas.
+
+Example setup to get typechecking working properly for Pandas: 
+
+``` shell
+git clone https://github.com/microsoft/python-type-stubs $HOME/src
+```
+
+``` emacs-lisp
+  (setq lsp-pyright-use-library-code-for-types t) ;; set this to nil if getting too many false positive type errors
+  (setq lsp-pyright-stub-path (concat (getenv "HOME") "/src/python-type-stubs")) ;; example
+```
