@@ -249,6 +249,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#usage-notes" class="md-nav__link">
+    Usage notes
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -293,6 +300,13 @@
         <li class="md-nav__item">
   <a href="#configuration" class="md-nav__link">
     Configuration
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage-notes" class="md-nav__link">
+    Usage notes
   </a>
   
 </li>
@@ -343,6 +357,14 @@
 <li><code>python.venvPath</code> via <code>lsp-pyright-venv-path</code></li>
 </ul>
 <p>Projects can be further configured using <code>pyrightconfig.json</code> file. For further details please see <a href="https://github.com/microsoft/pyright/blob/master/docs/configuration.md">Pyright Configuration</a>.</p>
+<h3 id="usage-notes">Usage notes<a class="headerlink" href="#usage-notes" title="Permanent link">#</a></h3>
+<p>Pyright includes a recent copy of the Python stdlib type stubs. To add type stubs for additional libraries, customize <code>lsp-pyright-stub-path</code>, or place the appropriate type stubs in <code>typings</code> subdirectory of your project (this is the default stub path). Note that without stubs but with <code>lsp-pyright-use-library-code-for-types</code> non-nil, you may see type checking errors, particularly for complex libraries such as Pandas.</p>
+<p>Example setup to get typechecking working properly for Pandas: </p>
+<div class="highlight"><pre><span></span><code>git clone https://github.com/microsoft/python-type-stubs <span class="nv">$HOME</span>/src
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>  <span class="p">(</span><span class="k">setq</span> <span class="nv">lsp-pyright-use-library-code-for-types</span> <span class="no">t</span><span class="p">)</span> <span class="c1">;; set this to nil if getting too many false positive type errors</span>
+  <span class="p">(</span><span class="k">setq</span> <span class="nv">lsp-pyright-stub-path</span> <span class="p">(</span><span class="nf">concat</span> <span class="p">(</span><span class="nv">getenv</span> <span class="s">&quot;HOME&quot;</span><span class="p">)</span> <span class="s">&quot;/src/python-type-stubs&quot;</span><span class="p">))</span> <span class="c1">;; example</span>
+</code></pre></div>
 
   <hr>
 <div class="md-source-file">
