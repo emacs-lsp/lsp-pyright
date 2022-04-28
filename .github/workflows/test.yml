@@ -8,16 +8,24 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.experimental }}
     strategy:
       fail-fast: false
       matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
         emacs-version: [26.1, 26.2, 26.3, 27.1, 27.2, 28.1]
         experimental: [false]
         include:
-          - emacs-version: snapshot
-            experimental: true
+        - os: ubuntu-latest
+          emacs-version: snapshot
+          experimental: true
+        - os: macos-latest
+          emacs-version: snapshot
+          experimental: true
+        - os: windows-latest
+          emacs-version: snapshot
+          experimental: true
 
     steps:
       - name: setenv
@@ -25,19 +33,17 @@ jobs:
 
       - uses: actions/checkout@v2
 
-      - uses: purcell/setup-emacs@master
+      - uses: jcs090218/setup-emacs@master
         with:
           version: ${{ matrix.emacs-version }}
 
-      - uses: conao3/setup-cask@master
+      - uses: actions/setup-node@v2
         with:
-          version: 0.8.6
+          node-version: '16'
 
-      - name: install
-        run: 'cask install'
+      - uses: emacs-eask/setup-eask@master
+        with:
+          version: 'snapshot'
 
-      - name: build
-        run: 'cask build'
-
-      - name: package
-        run: 'cask package'
+      - name: Run tests
+        run: 'make ci'
