@@ -181,10 +181,9 @@ Current LSP WORKSPACE should be passed in."
   (when lsp-progress-via-spinner
     (with-lsp-workspace workspace
       (--each (lsp--workspace-buffers workspace)
-    (when (buffer-live-p it)
+        (when (buffer-live-p it)
           (with-current-buffer it
-            (lsp--spinner-start)))))
-    )
+            (lsp--spinner-start))))))
   (lsp-log "Pyright language server is analyzing..."))
 
 (defun lsp-pyright--report-progress-callback (_workspace params)
@@ -199,10 +198,9 @@ Current LSP WORKSPACE should be passed in."
   (when lsp-progress-via-spinner
     (with-lsp-workspace workspace
       (--each (lsp--workspace-buffers workspace)
-    (when (buffer-live-p it)
+        (when (buffer-live-p it)
           (with-current-buffer it
-            (lsp--spinner-stop)))))
-    )
+            (lsp--spinner-stop))))))
   (lsp-log "Pyright language server is analyzing...done"))
 
 (lsp-register-custom-settings
