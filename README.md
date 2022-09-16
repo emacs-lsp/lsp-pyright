@@ -5,11 +5,21 @@
 [![MELPA](https://melpa.org/packages/lsp-pyright-badge.svg)](https://melpa.org/#/lsp-pyright)
 [![Join the chat at https://gitter.im/emacs-lsp/lsp-mode](https://badges.gitter.im/emacs-lsp/lsp-mode.svg)](https://gitter.im/emacs-lsp/lsp-mode?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+<!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
+
+## Table of Contents
+
+- [Quickstart](#quickstart)
+- [Configuration](#configuration)
+- [Usage notes](#usage-notes)
+
+<!-- markdown-toc end -->
+
 lsp-mode client leveraging [Pyright language server](https://github.com/microsoft/pyright)
 
-### Quickstart
+## Quickstart
 
-``` emacs-lisp
+```emacs-lisp
 (use-package lsp-pyright
   :ensure t
   :hook (python-mode . (lambda ()
@@ -17,9 +27,10 @@ lsp-mode client leveraging [Pyright language server](https://github.com/microsof
                           (lsp))))  ; or lsp-deferred
 ```
 
-### Configuration
+## Configuration
 
-`lsp-pyright` supports the following configuration. Each configuration is described in detail in [Pyright Settings](https://github.com/microsoft/pyright/blob/master/docs/settings.md).
+`lsp-pyright` supports the following configuration. Each configuration is described in detail in
+[Pyright Settings](https://github.com/microsoft/pyright/blob/master/docs/settings.md).
 
 - `pyright.disableLanguageServices` via `lsp-pyright-disable-language-services`
 - `pyright.disableOrganizeImports` via `lsp-pyright-disable-organize-imports`
@@ -33,19 +44,24 @@ lsp-mode client leveraging [Pyright language server](https://github.com/microsof
 - `python.analysis.extraPaths` via `lsp-pyright-extra-paths`
 - `python.venvPath` via `lsp-pyright-venv-path`
 
-Projects can be further configured using `pyrightconfig.json` file. For further details please see [Pyright Configuration](https://github.com/microsoft/pyright/blob/master/docs/configuration.md).
+Projects can be further configured using `pyrightconfig.json` file. For further details please see
+[Pyright Configuration](https://github.com/microsoft/pyright/blob/master/docs/configuration.md).
 
-### Usage notes
+## Usage notes
 
-Pyright includes a recent copy of the Python stdlib type stubs. To add type stubs for additional libraries, customize `lsp-pyright-stub-path`, or place the appropriate type stubs in `typings` subdirectory of your project (this is the default stub path). Note that without stubs but with `lsp-pyright-use-library-code-for-types` non-nil, you may see type checking errors, particularly for complex libraries such as Pandas.
+Pyright includes a recent copy of the Python stdlib type stubs. To add type stubs for additional
+libraries, customize `lsp-pyright-stub-path`, or place the appropriate type stubs in `typings`
+subdirectory of your project (this is the default stub path). Note that without stubs but with
+`lsp-pyright-use-library-code-for-types` non-nil, you may see type checking errors, particularly
+for complex libraries such as Pandas.
 
-Example setup to get typechecking working properly for Pandas: 
+Example setup to get typechecking working properly for Pandas:
 
-``` shell
+```shell
 git clone https://github.com/microsoft/python-type-stubs $HOME/src
 ```
 
-``` emacs-lisp
+```emacs-lisp
   (setq lsp-pyright-use-library-code-for-types t) ;; set this to nil if getting too many false positive type errors
   (setq lsp-pyright-stub-path (concat (getenv "HOME") "/src/python-type-stubs")) ;; example
 ```
