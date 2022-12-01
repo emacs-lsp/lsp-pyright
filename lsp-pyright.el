@@ -229,7 +229,7 @@ Current LSP WORKSPACE should be passed in."
   :new-connection (lsp-stdio-connection (lambda ()
                                           (cons (lsp-package-path 'pyright)
                                                 lsp-pyright-langserver-command-args)))
-  :major-modes '(python-mode)
+  :major-modes '(python-mode python-ts-mode)
   :server-id 'pyright
   :multi-root lsp-pyright-multi-root
   :priority 3
