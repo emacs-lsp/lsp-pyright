@@ -232,7 +232,7 @@ Current LSP WORKSPACE should be passed in."
   :major-modes '(python-mode python-ts-mode)
   :server-id 'pyright
   :multi-root lsp-pyright-multi-root
-  :priority 3
+  :priority 2
   :initialized-fn (lambda (workspace)
                     (with-lsp-workspace workspace
                       ;; we send empty settings initially, LSP server will ask for the
@@ -241,6 +241,27 @@ Current LSP WORKSPACE should be passed in."
                        (make-hash-table :test 'equal))))
   :download-server-fn (lambda (_client callback error-callback _update?)
                         (lsp-package-ensure 'pyright callback error-callback))
+  :notification-handlers (lsp-ht ("pyright/beginProgress" 'lsp-pyright--begin-progress-callback)
+                                 ("pyright/reportProgress" 'lsp-pyright--report-progress-callback)
+                                 ("pyright/endProgress" 'lsp-pyright--end-progress-callback))))
+
+(lsp-register-client
+ (make-lsp-client
+  :new-connection
+  (lsp-tramp-connection (lambda ()
+                          (cons (executable-find "pyright-langserver" t)
+                                lsp-pyright-langserver-command-args)))
+  :major-modes '(python-mode python-ts-mode)
+  :server-id 'pyright-remote
+  :multi-root lsp-pyright-multi-root
+  :remote? t
+  :priority 1
+  :initialized-fn (lambda (workspace)
+                    (with-lsp-workspace workspace
+                      ;; we send empty settings initially, LSP server will ask for the
+                      ;; configuration of each workspace folder later separately
+                      (lsp--set-configuration
+                       (make-hash-table :test 'equal))))
   :notification-handlers (lsp-ht ("pyright/beginProgress" 'lsp-pyright--begin-progress-callback)
                                  ("pyright/reportProgress" 'lsp-pyright--report-progress-callback)
                                  ("pyright/endProgress" 'lsp-pyright--end-progress-callback))))
