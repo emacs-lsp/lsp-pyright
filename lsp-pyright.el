@@ -45,6 +45,11 @@
   :type '(repeat string)
   :group 'lsp-pyright)
 
+(defcustom lsp-pyright-library-folders-fn nil
+  "Function which returns a list of library folders."
+  :type 'function
+  :group 'lsp-pyright)
+
 (defcustom lsp-pyright-disable-language-services nil
   "Disables all language services except for \"hover\"."
   :type 'boolean
@@ -239,6 +244,7 @@ Current LSP WORKSPACE should be passed in."
                       ;; configuration of each workspace folder later separately
                       (lsp--set-configuration
                        (make-hash-table :test 'equal))))
+  :library-folders-fn lsp-pyright-library-folders-fn
   :download-server-fn (lambda (_client callback error-callback _update?)
                         (lsp-package-ensure 'pyright callback error-callback))
   :notification-handlers (lsp-ht ("pyright/beginProgress" 'lsp-pyright--begin-progress-callback)
@@ -262,6 +268,7 @@ Current LSP WORKSPACE should be passed in."
                       ;; configuration of each workspace folder later separately
                       (lsp--set-configuration
                        (make-hash-table :test 'equal))))
+  :library-folders-fn lsp-pyright-library-folders-fn
   :notification-handlers (lsp-ht ("pyright/beginProgress" 'lsp-pyright--begin-progress-callback)
                                  ("pyright/reportProgress" 'lsp-pyright--report-progress-callback)
                                  ("pyright/endProgress" 'lsp-pyright--end-progress-callback))))
