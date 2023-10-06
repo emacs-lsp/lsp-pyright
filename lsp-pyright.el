@@ -203,6 +203,12 @@ Current LSP WORKSPACE should be passed in."
             (lsp--spinner-stop))))))
   (lsp-log "Pyright language server is analyzing...done"))
 
+(defun lsp-pyright-organize-imports ()
+  "Organize imports in current buffer."
+  (interactive)
+  (lsp-send-execute-command "pyright.organizeimports"
+                            (vector (concat "file://" (buffer-file-name)))))
+
 (lsp-register-custom-settings
  `(("pyright.disableLanguageServices" lsp-pyright-disable-language-services t)
    ("pyright.disableOrganizeImports" lsp-pyright-disable-organize-imports t)
