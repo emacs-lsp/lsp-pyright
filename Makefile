@@ -27,4 +27,4 @@ test:
 	$(EASK) ert ./test/*.el
 
 clean:
-	$(EASK) clean-all
+	$(EASK) clean all
