@@ -47,6 +47,20 @@ lsp-mode client leveraging [Pyright language server](https://github.com/microsof
 Projects can be further configured using `pyrightconfig.json` file. For further details please see
 [Pyright Configuration](https://github.com/microsoft/pyright/blob/master/docs/configuration.md).
 
+## Choosing the correct version of Python
+
+`lsp-pyright` will try its best to select the correct version of the
+python executable to use. It will do so by iteratively executing
+different search functions, going from most precise to most
+general.
+
+The list and order of the list can be modified by customizing
+`lsp-pyright-python-search-functions`. By default the order is:
+ - Look for a parent directory with a virtual-environment named
+   `.venv` or `venv` via `lsp-pyright--locate-python-venv`.
+ - Look for a python executable on your PATH via
+   `lsp-pyright--locate-python-python`.
+
 ## Usage notes
 
 Pyright includes a recent copy of the Python stdlib type stubs. To add type stubs for additional
