@@ -33,6 +33,7 @@
 (require 'lsp-mode)
 (require 'dash)
 (require 'ht)
+(require 'cl-lib)
 
 ;; Group declaration
 (defgroup lsp-pyright nil
@@ -156,7 +157,14 @@ Only available in Emacs 27 and above."
   :type 'boolean
   :group 'lsp-pyright)
 
-(defun lsp-pyright-locate-venv ()
+(defcustom lsp-pyright-python-search-functions
+  '(lsp-pyright--locate-python-venv
+    lsp-pyright--locate-python-python)
+  "List of functions to search for python executable."
+  :type 'list
+  :group 'lsp-pyright)
+
+(defun lsp-pyright--locate-venv ()
   "Look for virtual environments local to the workspace."
   (or lsp-pyright-venv-path
       (and lsp-pyright-venv-directory
@@ -167,13 +175,20 @@ Only available in Emacs 27 and above."
       (-when-let (venv-base-directory (locate-dominating-file default-directory ".venv/"))
         (concat venv-base-directory ".venv"))))
 
+(defun lsp-pyright--locate-python-venv ()
+  "Find a python executable based on the current virtual environment."
+  (executable-find (f-expand "bin/python" (lsp-pyright--locate-venv))))
+
+(defun lsp-pyright--locate-python-python ()
+  "Find a python executable based on the version of python on the PATH."
+  (with-no-warnings
+    (if (>= emacs-major-version 27)
+        (executable-find lsp-pyright-python-executable-cmd lsp-pyright-prefer-remote-env)
+      (executable-find lsp-pyright-python-executable-cmd))))
+
 (defun lsp-pyright-locate-python ()
-  "Look for python executable cmd to the workspace."
-  (or (executable-find (f-expand "bin/python" (lsp-pyright-locate-venv)))
-      (with-no-warnings
-        (if (>= emacs-major-version 27)
-            (executable-find lsp-pyright-python-executable-cmd lsp-pyright-prefer-remote-env)
-          (executable-find lsp-pyright-python-executable-cmd)))))
+  "Find a python executable cmd for the workspace."
+  (cl-some #'funcall lsp-pyright-python-search-functions))
 
 (defun lsp-pyright--begin-progress-callback (workspace &rest _)
   "Log begin progress information.
