@@ -257,6 +257,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#choosing-the-correct-version-of-python" class="md-nav__link">
+    Choosing the correct version of Python
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#usage-notes" class="md-nav__link">
     Usage notes
   </a>
@@ -314,6 +321,13 @@
         <li class="md-nav__item">
   <a href="#configuration" class="md-nav__link">
     Configuration
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choosing-the-correct-version-of-python" class="md-nav__link">
+    Choosing the correct version of Python
   </a>
   
 </li>
@@ -383,6 +397,17 @@
 </ul>
 <p>Projects can be further configured using <code>pyrightconfig.json</code> file. For further details please see
 <a href="https://github.com/microsoft/pyright/blob/master/docs/configuration.md">Pyright Configuration</a>.</p>
+<h2 id="choosing-the-correct-version-of-python">Choosing the correct version of Python<a class="headerlink" href="#choosing-the-correct-version-of-python" title="Permanent link">#</a></h2>
+<p><code>lsp-pyright</code> will try its best to select the correct version of the
+python executable to use. It will do so by iteratively executing
+different search functions, going from most precise to most
+general.</p>
+<p>The list and order of the list can be modified by customizing
+<code>lsp-pyright-python-search-functions</code>. By default the order is:
+ - Look for a parent directory with a virtual-environment named
+   <code>.venv</code> or <code>venv</code> via <code>lsp-pyright--locate-python-venv</code>.
+ - Look for a python executable on your PATH via
+   <code>lsp-pyright--locate-python-python</code>.</p>
 <h2 id="usage-notes">Usage notes<a class="headerlink" href="#usage-notes" title="Permanent link">#</a></h2>
 <p>Pyright includes a recent copy of the Python stdlib type stubs. To add type stubs for additional
 libraries, customize <code>lsp-pyright-stub-path</code>, or place the appropriate type stubs in <code>typings</code>
@@ -401,7 +426,7 @@ for complex libraries such as Pandas.</p>
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">April 9, 2024</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">April 16, 2024</span>
       
     
   </small>
