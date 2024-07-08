@@ -56,14 +56,6 @@
   :type 'boolean
   :group 'lsp-pyright)
 
-(defcustom lsp-pyright-use-library-code-for-types t
-  "Determines whether to analyze library code.
-In order to extract type information in the absence of type stub files.
-This can add significant overhead and may result in
-poor-quality type information.
-The default value for this option is true."
-  :type 'boolean
-  :group 'lsp-pyright)
 
 (defcustom lsp-pyright-disable-tagged-hints nil
   "Disables grayed out special hint diagnostics tags."
@@ -78,15 +70,6 @@ If this option is set to \"openFilesOnly\", pyright analyzes only open files."
   :type '(choice
           (const "openFilesOnly")
           (const "workspace"))
-  :group 'lsp-pyright)
-
-(defcustom lsp-pyright-typechecking-mode "basic"
-  "Determines the default type-checking level used by pyright.
-This can be overridden in the configuration file."
-  :type '(choice
-          (const "off")
-          (const "basic")
-          (const "strict"))
   :group 'lsp-pyright)
 
 (defcustom lsp-pyright-log-level "info"
@@ -236,9 +219,7 @@ Current LSP WORKSPACE should be passed in."
    ("python.analysis.autoImportCompletions" lsp-pyright-auto-import-completions t)
    ("python.analysis.typeshedPaths" lsp-pyright-typeshed-paths)
    ("python.analysis.stubPath" lsp-pyright-stub-path)
-   ("python.analysis.useLibraryCodeForTypes" lsp-pyright-use-library-code-for-types t)
    ("python.analysis.diagnosticMode" lsp-pyright-diagnostic-mode)
-   ("python.analysis.typeCheckingMode" lsp-pyright-typechecking-mode)
    ("python.analysis.logLevel" lsp-pyright-log-level)
    ("python.analysis.autoSearchPaths" lsp-pyright-auto-search-paths t)
    ("python.analysis.extraPaths" lsp-pyright-extra-paths)
