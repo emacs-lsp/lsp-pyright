@@ -65,6 +65,11 @@ The default value for this option is true."
   :type 'boolean
   :group 'lsp-pyright)
 
+(defcustom lsp-pyright-disable-tagged-hints nil
+  "Disables grayed out special hint diagnostics tags."
+  :type 'boolean
+  :group 'lsp-pyright)
+
 (defcustom lsp-pyright-diagnostic-mode "openFilesOnly"
   "Determines pyright diagnostic mode.
 Whether pyright analyzes (and reports errors for) all files
@@ -227,6 +232,7 @@ Current LSP WORKSPACE should be passed in."
 (lsp-register-custom-settings
  `(("pyright.disableLanguageServices" lsp-pyright-disable-language-services t)
    ("pyright.disableOrganizeImports" lsp-pyright-disable-organize-imports t)
+   ("pyright.disableTaggedHints" lsp-pyright-disable-tagged-hints t)
    ("python.analysis.autoImportCompletions" lsp-pyright-auto-import-completions t)
    ("python.analysis.typeshedPaths" lsp-pyright-typeshed-paths)
    ("python.analysis.stubPath" lsp-pyright-stub-path)
