@@ -101,11 +101,6 @@ If there are no execution environments defined in the config file."
   :type 'boolean
   :group 'lsp-pyright)
 
-(defcustom lsp-pyright-stub-path ""
-  "Path to directory containing custom type stub files."
-  :type 'directory
-  :group 'lsp-pyright)
-
 (defcustom lsp-pyright-venv-path nil
   "Path to folder with subdirectories that contain virtual environments.
 Virtual Envs specified in pyrightconfig.json will be looked up in this path."
@@ -116,12 +111,6 @@ Virtual Envs specified in pyrightconfig.json will be looked up in this path."
   "Folder with subdirectories that contain virtual environments.
 Virtual Envs specified in pyrightconfig.json will be looked up in this path."
   :type '(choice (const :tag "None" nil) directory)
-  :group 'lsp-pyright)
-
-(defcustom lsp-pyright-typeshed-paths []
-  "Paths to look for typeshed modules.
-Pyright currently honors only the first path in the array."
-  :type 'lsp-string-vector
   :group 'lsp-pyright)
 
 (defcustom lsp-pyright-multi-root t
@@ -217,8 +206,6 @@ Current LSP WORKSPACE should be passed in."
    ("pyright.disableOrganizeImports" lsp-pyright-disable-organize-imports t)
    ("pyright.disableTaggedHints" lsp-pyright-disable-tagged-hints t)
    ("python.analysis.autoImportCompletions" lsp-pyright-auto-import-completions t)
-   ("python.analysis.typeshedPaths" lsp-pyright-typeshed-paths)
-   ("python.analysis.stubPath" lsp-pyright-stub-path)
    ("python.analysis.diagnosticMode" lsp-pyright-diagnostic-mode)
    ("python.analysis.logLevel" lsp-pyright-log-level)
    ("python.analysis.autoSearchPaths" lsp-pyright-auto-search-paths t)
