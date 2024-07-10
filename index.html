@@ -263,13 +263,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#usage-notes" class="md-nav__link">
-    Usage notes
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -332,13 +325,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#usage-notes" class="md-nav__link">
-    Usage notes
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -385,14 +371,13 @@
 <ul>
 <li><code>pyright.disableLanguageServices</code> via <code>lsp-pyright-disable-language-services</code></li>
 <li><code>pyright.disableOrganizeImports</code> via <code>lsp-pyright-disable-organize-imports</code></li>
+<li><code>pyright.disableTaggedHints</code> via <code>lsp-pyright-disable-tagged-hints</code></li>
 <li><code>python.analysis.autoImportCompletions</code> via <code>lsp-pyright-auto-import-completions</code></li>
-<li><code>python.analysis.useLibraryCodeForTypes</code> via <code>lsp-pyright-use-library-code-for-types</code></li>
-<li><code>python.analysis.typeshedPaths</code> via <code>lsp-pyright-typeshed-paths</code></li>
 <li><code>python.analysis.diagnosticMode</code> via <code>lsp-pyright-diagnostic-mode</code></li>
-<li><code>python.analysis.typeCheckingMode</code> via <code>lsp-pyright-typechecking-mode</code></li>
 <li><code>python.analysis.logLevel</code> via <code>lsp-pyright-log-level</code></li>
 <li><code>python.analysis.autoSearchPaths</code> via <code>lsp-pyright-auto-search-paths</code></li>
 <li><code>python.analysis.extraPaths</code> via <code>lsp-pyright-extra-paths</code></li>
+<li><code>python.pythonPath</code> via <code>lsp-pyright-locate-python</code></li>
 <li><code>python.venvPath</code> via <code>lsp-pyright-venv-path</code></li>
 </ul>
 <p>Projects can be further configured using <code>pyrightconfig.json</code> file. For further details please see
@@ -408,25 +393,13 @@ general.</p>
    <code>.venv</code> or <code>venv</code> via <code>lsp-pyright--locate-python-venv</code>.
  - Look for a python executable on your PATH via
    <code>lsp-pyright--locate-python-python</code>.</p>
-<h2 id="usage-notes">Usage notes<a class="headerlink" href="#usage-notes" title="Permanent link">#</a></h2>
-<p>Pyright includes a recent copy of the Python stdlib type stubs. To add type stubs for additional
-libraries, customize <code>lsp-pyright-stub-path</code>, or place the appropriate type stubs in <code>typings</code>
-subdirectory of your project (this is the default stub path). Note that without stubs but with
-<code>lsp-pyright-use-library-code-for-types</code> non-nil, you may see type checking errors, particularly
-for complex libraries such as Pandas.</p>
-<p>Example setup to get typechecking working properly for Pandas:</p>
-<div class="highlight"><pre><span></span><code>git clone https://github.com/microsoft/python-type-stubs <span class="nv">$HOME</span>/src
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>  <span class="p">(</span><span class="k">setq</span> <span class="nv">lsp-pyright-use-library-code-for-types</span> <span class="no">t</span><span class="p">)</span> <span class="c1">;; set this to nil if getting too many false positive type errors</span>
-  <span class="p">(</span><span class="k">setq</span> <span class="nv">lsp-pyright-stub-path</span> <span class="p">(</span><span class="nf">concat</span> <span class="p">(</span><span class="nv">getenv</span> <span class="s">&quot;HOME&quot;</span><span class="p">)</span> <span class="s">&quot;/src/python-type-stubs&quot;</span><span class="p">))</span> <span class="c1">;; example</span>
-</code></pre></div>
 
   <hr>
 <div class="md-source-file">
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">July 9, 2024</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">July 10, 2024</span>
       
     
   </small>
