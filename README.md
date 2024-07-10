@@ -34,14 +34,13 @@ lsp-mode client leveraging [Pyright language server](https://github.com/microsof
 
 - `pyright.disableLanguageServices` via `lsp-pyright-disable-language-services`
 - `pyright.disableOrganizeImports` via `lsp-pyright-disable-organize-imports`
+- `pyright.disableTaggedHints` via `lsp-pyright-disable-tagged-hints`
 - `python.analysis.autoImportCompletions` via `lsp-pyright-auto-import-completions`
-- `python.analysis.useLibraryCodeForTypes` via `lsp-pyright-use-library-code-for-types`
-- `python.analysis.typeshedPaths` via `lsp-pyright-typeshed-paths`
 - `python.analysis.diagnosticMode` via `lsp-pyright-diagnostic-mode`
-- `python.analysis.typeCheckingMode` via `lsp-pyright-typechecking-mode`
 - `python.analysis.logLevel` via `lsp-pyright-log-level`
 - `python.analysis.autoSearchPaths` via `lsp-pyright-auto-search-paths`
 - `python.analysis.extraPaths` via `lsp-pyright-extra-paths`
+- `python.pythonPath` via `lsp-pyright-locate-python`
 - `python.venvPath` via `lsp-pyright-venv-path`
 
 Projects can be further configured using `pyrightconfig.json` file. For further details please see
@@ -60,22 +59,3 @@ The list and order of the list can be modified by customizing
    `.venv` or `venv` via `lsp-pyright--locate-python-venv`.
  - Look for a python executable on your PATH via
    `lsp-pyright--locate-python-python`.
-
-## Usage notes
-
-Pyright includes a recent copy of the Python stdlib type stubs. To add type stubs for additional
-libraries, customize `lsp-pyright-stub-path`, or place the appropriate type stubs in `typings`
-subdirectory of your project (this is the default stub path). Note that without stubs but with
-`lsp-pyright-use-library-code-for-types` non-nil, you may see type checking errors, particularly
-for complex libraries such as Pandas.
-
-Example setup to get typechecking working properly for Pandas:
-
-```shell
-git clone https://github.com/microsoft/python-type-stubs $HOME/src
-```
-
-```emacs-lisp
-  (setq lsp-pyright-use-library-code-for-types t) ;; set this to nil if getting too many false positive type errors
-  (setq lsp-pyright-stub-path (concat (getenv "HOME") "/src/python-type-stubs")) ;; example
-```
