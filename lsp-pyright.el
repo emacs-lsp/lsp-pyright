@@ -41,7 +41,7 @@
   :group 'lsp-mode
   :link '(url-link "https://github.com/microsoft/pyright"))
 
-(defcustom lsp-pyright-fork "basedpyright"
+(defcustom lsp-pyright-fork "pyright"
   "Choose whether to use Pyright or the BasedPyright fork."
   :type '(choice
           (const "pyright")
