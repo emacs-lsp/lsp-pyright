@@ -41,7 +41,7 @@
   :group 'lsp-mode
   :link '(url-link "https://github.com/microsoft/pyright"))
 
-(defcustom lsp-pyright-fork "pyright"
+(defcustom lsp-pyright-fork "basedpyright"
   "Choose whether to use Pyright or the BasedPyright fork."
   :type '(choice
           (const "pyright")
@@ -222,7 +222,7 @@ Current LSP WORKSPACE should be passed in."
    ("python.venvPath" (lambda () (or lsp-pyright-venv-path "")))))
 
 (lsp-dependency 'pyright
-                '(:system "basedpyright-langserver"))
+                '(:system ,(concat lsp-pyright-fork "-langserver") ))
 
 (lsp-register-client
  (make-lsp-client
