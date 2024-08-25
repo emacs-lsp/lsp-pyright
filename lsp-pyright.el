@@ -37,11 +37,12 @@
 
 ;; Group declaration
 (defgroup lsp-pyright nil
-  "LSP support for python using the BasedPyright Language Server."
+  "LSP support for python using the Pyright Language Server."
   :group 'lsp-mode
-  :link '(url-link "https://github.com/microsoft/pyright"))
+  :link '(url-link "https://github.com/microsoft/pyright")
+  :link '(url-link "https://github.com/DetachHead/basedpyright"))
 
-(defcustom lsp-pyright-fork "basedpyright"
+(defcustom lsp-pyright-fork "pyright"
   "Choose whether to use Pyright or the BasedPyright fork."
   :type '(choice
           (const "pyright")
