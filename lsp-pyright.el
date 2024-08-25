@@ -222,7 +222,7 @@ Current LSP WORKSPACE should be passed in."
    ("python.venvPath" (lambda () (or lsp-pyright-venv-path "")))))
 
 (lsp-dependency 'pyright
-                '(:system (concat lsp-pyright-fork "-langserver")))
+                '(:system "basedpyright-langserver"))
 
 (lsp-register-client
  (make-lsp-client
