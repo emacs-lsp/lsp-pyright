@@ -69,7 +69,7 @@
   :type 'boolean
   :group 'lsp-pyright)
 
-(defcustom lsp-pyright-diagnostic-mode "workspace"
+(defcustom lsp-pyright-diagnostic-mode "openFilesOnly"
   "Determines pyright diagnostic mode.
 Whether pyright analyzes (and reports errors for) all files
 in the workspace, as indicated by the config file.
