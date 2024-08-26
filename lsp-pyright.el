@@ -39,7 +39,15 @@
 (defgroup lsp-pyright nil
   "LSP support for python using the Pyright Language Server."
   :group 'lsp-mode
-  :link '(url-link "https://github.com/microsoft/pyright"))
+  :link '(url-link "https://github.com/microsoft/pyright")
+  :link '(url-link "https://github.com/DetachHead/basedpyright"))
+
+(defcustom lsp-pyright-fork "pyright"
+  "Choose whether to use Pyright or the BasedPyright fork."
+  :type '(choice
+          (const "pyright")
+          (const "basedpyright"))
+  :group 'lsp-pyright)
 
 (defcustom lsp-pyright-langserver-command-args '("--stdio")
   "Command to start pyright-langserver."
@@ -198,13 +206,13 @@ Current LSP WORKSPACE should be passed in."
 (defun lsp-pyright-organize-imports ()
   "Organize imports in current buffer."
   (interactive)
-  (lsp-send-execute-command "pyright.organizeimports"
+  (lsp-send-execute-command (concat lsp-pyright-fork ".organizeimports")
                             (vector (concat "file://" (buffer-file-name)))))
 
 (lsp-register-custom-settings
- `(("pyright.disableLanguageServices" lsp-pyright-disable-language-services t)
-   ("pyright.disableOrganizeImports" lsp-pyright-disable-organize-imports t)
-   ("pyright.disableTaggedHints" lsp-pyright-disable-tagged-hints t)
+ `((,(concat lsp-pyright-fork ".disableLanguageServices") lsp-pyright-disable-language-services t)
+   (,(concat lsp-pyright-fork ".disableOrganizeImports") lsp-pyright-disable-organize-imports t)
+   (,(concat lsp-pyright-fork ".disableTaggedHints") lsp-pyright-disable-tagged-hints t)
    ("python.analysis.autoImportCompletions" lsp-pyright-auto-import-completions t)
    ("python.analysis.diagnosticMode" lsp-pyright-diagnostic-mode)
    ("python.analysis.logLevel" lsp-pyright-log-level)
@@ -215,9 +223,7 @@ Current LSP WORKSPACE should be passed in."
    ("python.venvPath" (lambda () (or lsp-pyright-venv-path "")))))
 
 (lsp-dependency 'pyright
-                '(:system "pyright-langserver")
-                '(:npm :package "pyright"
-                       :path "pyright-langserver"))
+                (backquote (:system ,(concat lsp-pyright-fork "-langserver"))))
 
 (lsp-register-client
  (make-lsp-client
@@ -236,15 +242,15 @@ Current LSP WORKSPACE should be passed in."
                        (make-hash-table :test 'equal))))
   :download-server-fn (lambda (_client callback error-callback _update?)
                         (lsp-package-ensure 'pyright callback error-callback))
-  :notification-handlers (lsp-ht ("pyright/beginProgress" 'lsp-pyright--begin-progress-callback)
-                                 ("pyright/reportProgress" 'lsp-pyright--report-progress-callback)
-                                 ("pyright/endProgress" 'lsp-pyright--end-progress-callback))))
+  :notification-handlers (lsp-ht ((concat lsp-pyright-fork "/beginProgress") 'lsp-pyright--begin-progress-callback)
+                                 ((concat lsp-pyright-fork "/reportProgress") 'lsp-pyright--report-progress-callback)
+                                 ((concat lsp-pyright-fork "/endProgress") 'lsp-pyright--end-progress-callback))))
 
 (lsp-register-client
  (make-lsp-client
   :new-connection
   (lsp-tramp-connection (lambda ()
-                          (cons (executable-find "pyright-langserver" t)
+                          (cons (executable-find (concat lsp-pyright-fork "-langserver") t)
                                 lsp-pyright-langserver-command-args)))
   :major-modes '(python-mode python-ts-mode)
   :server-id 'pyright-remote
@@ -257,9 +263,9 @@ Current LSP WORKSPACE should be passed in."
                       ;; configuration of each workspace folder later separately
                       (lsp--set-configuration
                        (make-hash-table :test 'equal))))
-  :notification-handlers (lsp-ht ("pyright/beginProgress" 'lsp-pyright--begin-progress-callback)
-                                 ("pyright/reportProgress" 'lsp-pyright--report-progress-callback)
-                                 ("pyright/endProgress" 'lsp-pyright--end-progress-callback))))
+  :notification-handlers (lsp-ht ((concat lsp-pyright-fork "/beginProgress") 'lsp-pyright--begin-progress-callback)
+                                 ((concat lsp-pyright-fork "/reportProgress") 'lsp-pyright--report-progress-callback)
+                                 ((concat lsp-pyright-fork "/endProgress") 'lsp-pyright--end-progress-callback))))
 
 (provide 'lsp-pyright)
 ;;; lsp-pyright.el ends here
