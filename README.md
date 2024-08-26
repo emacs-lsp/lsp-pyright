@@ -15,7 +15,7 @@
 
 <!-- markdown-toc end -->
 
-lsp-mode client leveraging [Pyright language server](https://github.com/microsoft/pyright)
+lsp-mode client leveraging [pyright](https://github.com/microsoft/pyright) and [basedpyright](https://github.com/DetachHead/basedpyright) language server.
 
 ## Quickstart
 
