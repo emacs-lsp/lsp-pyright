@@ -361,6 +361,7 @@
 <h2 id="quickstart">Quickstart<a class="headerlink" href="#quickstart" title="Permanent link">#</a></h2>
 <div class="highlight"><pre><span></span><code><span class="p">(</span><span class="nb">use-package</span> <span class="nv">lsp-pyright</span>
   <span class="nb">:ensure</span> <span class="no">t</span>
+  <span class="nb">:custom</span> <span class="p">(</span><span class="nv">lsp-pyright-langserver-command</span> <span class="s">&quot;pyright&quot;</span><span class="p">)</span> <span class="c1">;; or basedpyright</span>
   <span class="nb">:hook</span> <span class="p">(</span><span class="nv">python-mode</span> <span class="o">.</span> <span class="p">(</span><span class="nb">lambda</span> <span class="p">()</span>
                           <span class="p">(</span><span class="nb">require</span> <span class="ss">&#39;lsp-pyright</span><span class="p">)</span>
                           <span class="p">(</span><span class="nv">lsp</span><span class="p">))))</span>  <span class="c1">; or lsp-deferred</span>
@@ -399,7 +400,7 @@ general.</p>
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">September 29, 2024</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">October 1, 2024</span>
       
     
   </small>
