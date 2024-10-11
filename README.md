@@ -33,9 +33,10 @@ lsp-mode client leveraging [pyright](https://github.com/microsoft/pyright) and [
 `lsp-pyright` supports the following configuration. Each configuration is described in detail in
 [Pyright Settings](https://github.com/microsoft/pyright/blob/master/docs/settings.md).
 
-- `pyright.disableLanguageServices` via `lsp-pyright-disable-language-services`
-- `pyright.disableOrganizeImports` via `lsp-pyright-disable-organize-imports`
-- `pyright.disableTaggedHints` via `lsp-pyright-disable-tagged-hints`
+- `basedpyright.` / `pyright.disableLanguageServices` via `lsp-pyright-disable-language-services`
+- `basedpyright.` / `pyright.disableOrganizeImports` via `lsp-pyright-disable-organize-imports`
+- `basedpyright.` / `pyright.disableTaggedHints` via `lsp-pyright-disable-tagged-hints`
+- `basedpyright.` / `python.typeCheckingMode` via `lsp-pyright-type-checking-mode`
 - `python.analysis.autoImportCompletions` via `lsp-pyright-auto-import-completions`
 - `python.analysis.diagnosticMode` via `lsp-pyright-diagnostic-mode`
 - `python.analysis.logLevel` via `lsp-pyright-log-level`
