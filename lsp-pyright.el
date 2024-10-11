@@ -80,6 +80,20 @@ If this option is set to \"openFilesOnly\", pyright analyzes only open files."
           (const "workspace"))
   :group 'lsp-pyright)
 
+(defcustom lsp-pyright-type-checking-mode "standard"
+  "Specifies the default rule set to use.
+
+\"off\" disables all type-checking rules, but Python syntax and semantic
+errors are still reported. \"all\" reports all errors in basedpyright,
+but is not supported by pyright. "
+  :type '(choice
+          (const :tag "Off" "off")
+          (const :tag "Basic" "basic")
+          (const :tag "Standard" "standard")
+          (const :tag "Strict" "strict")
+          (const :tag "All (basedpyright only)" "all"))
+  :group 'lsp-pyright)
+
 (defcustom lsp-pyright-log-level "info"
   "Determines the default log level used by pyright.
 This can be overridden in the configuration file."
@@ -213,6 +227,8 @@ Current LSP WORKSPACE should be passed in."
  `((,(concat lsp-pyright-langserver-command ".disableLanguageServices") lsp-pyright-disable-language-services t)
    (,(concat lsp-pyright-langserver-command ".disableOrganizeImports") lsp-pyright-disable-organize-imports t)
    (,(concat lsp-pyright-langserver-command ".disableTaggedHints") lsp-pyright-disable-tagged-hints t)
+   (,(concat lsp-pyright-langserver-command ".typeCheckingMode") lsp-pyright-type-checking-mode)
+   ("python.analysis.typeCheckingMode" lsp-pyright-type-checking-mode)
    ("python.analysis.autoImportCompletions" lsp-pyright-auto-import-completions t)
    ("python.analysis.diagnosticMode" lsp-pyright-diagnostic-mode)
    ("python.analysis.logLevel" lsp-pyright-log-level)
