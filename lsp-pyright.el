@@ -163,6 +163,18 @@ Only available in Emacs 27 and above."
   :type 'list
   :group 'lsp-pyright)
 
+(defcustom lsp-pyright-diagnostic-severity-overrides '()
+  "Overrides certain rules severity leve l"
+  :group 'lsp-pyright
+  :type `(alist :key-type (string :tag "Rule Name")
+                :value-type (choice
+                             (const :tag "No Error" "none")
+                             (const :tag "Warning""warning")
+                             (const :tag "Information" "information")
+                             (const :tag "Error" "error")
+                             (const :tag "An error is generated" t)
+                             (const :tag "No error is generated" ,json-false))))
+
 (defun lsp-pyright--locate-venv ()
   "Look for virtual environments local to the workspace."
   (or lsp-pyright-venv-path
@@ -228,6 +240,8 @@ Current LSP WORKSPACE should be passed in."
    (,(concat lsp-pyright-langserver-command ".disableOrganizeImports") lsp-pyright-disable-organize-imports t)
    (,(concat lsp-pyright-langserver-command ".disableTaggedHints") lsp-pyright-disable-tagged-hints t)
    (,(concat lsp-pyright-langserver-command ".typeCheckingMode") lsp-pyright-type-checking-mode)
+   (,(concat lsp-pyright-langserver-command ".analysis.diagnosticSeverityOverrides") (lambda () (ht-from-alist lsp-pyright-diagnostic-severity-overrides)))
+   ("python.analysis.diagnosticSeverityOverrides" (lambda () (ht-from-alist lsp-pyright-diagnostic-severity-overrides)))
    ("python.analysis.typeCheckingMode" lsp-pyright-type-checking-mode)
    ("python.analysis.autoImportCompletions" lsp-pyright-auto-import-completions t)
    ("python.analysis.diagnosticMode" lsp-pyright-diagnostic-mode)
