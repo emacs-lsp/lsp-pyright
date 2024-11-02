@@ -37,6 +37,10 @@ lsp-mode client leveraging [pyright](https://github.com/microsoft/pyright) and [
 - `basedpyright.` / `pyright.disableOrganizeImports` via `lsp-pyright-disable-organize-imports`
 - `basedpyright.` / `pyright.disableTaggedHints` via `lsp-pyright-disable-tagged-hints`
 - `basedpyright.` / `python.typeCheckingMode` via `lsp-pyright-type-checking-mode`
+- `basedpyright.analysis.inlayHints.variableTypes` via `lsp-pyright-basedpyright-inlay-hints-variable-types`
+- `basedpyright.analysis.inlayHints.callArgumentNames` via `lsp-pyright-basedpyright-inlay-hints-call-argument-names`
+- `basedpyright.analysis.inlayHints.functionReturnTypes` via `lsp-pyright-basedpyright-inlay-hints-function-return-types`
+- `basedpyright.analysis.inlayHints.genericTypes` via `lsp-pyright-basedpyright-inlay-hints-generic-types`
 - `python.analysis.autoImportCompletions` via `lsp-pyright-auto-import-completions`
 - `python.analysis.diagnosticMode` via `lsp-pyright-diagnostic-mode`
 - `python.analysis.logLevel` via `lsp-pyright-log-level`

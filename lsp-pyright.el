@@ -175,6 +175,34 @@ Only available in Emacs 27 and above."
                              (const :tag "An error is generated" t)
                              (const :tag "No error is generated" ,json-false))))
 
+(defcustom lsp-pyright-basedpyright-inlay-hints-variable-types t
+  "Whether to show inlay hints on assignments to variables.
+
+Basedpyright only."
+  :type 'boolean
+  :group 'lsp-pyright)
+
+(defcustom lsp-pyright-basedpyright-inlay-hints-call-argument-names t
+  "Whether to show inlay hints on function arguments.
+
+Basedpyright only."
+  :type 'boolean
+  :group 'lsp-pyright)
+
+(defcustom lsp-pyright-basedpyright-inlay-hints-function-return-types t
+  "Whether to show inlay hints on function return types.
+
+Basedpyright only."
+  :type 'boolean
+  :group 'lsp-pyright)
+
+(defcustom lsp-pyright-basedpyright-inlay-hints-generic-types nil
+  "Whether to show inlay hints on inferred generic types.
+
+Basedpyright only."
+  :type 'boolean
+  :group 'lsp-pyright)
+
 (defun lsp-pyright--locate-venv ()
   "Look for virtual environments local to the workspace."
   (or lsp-pyright-venv-path
@@ -242,6 +270,10 @@ Current LSP WORKSPACE should be passed in."
    (,(concat lsp-pyright-langserver-command ".typeCheckingMode") lsp-pyright-type-checking-mode)
    (,(concat lsp-pyright-langserver-command ".analysis.diagnosticSeverityOverrides") (lambda () (ht-from-alist lsp-pyright-diagnostic-severity-overrides)))
    ("python.analysis.diagnosticSeverityOverrides" (lambda () (ht-from-alist lsp-pyright-diagnostic-severity-overrides)))
+   ("basedpyright.analysis.inlayHints.variableTypes" lsp-pyright-basedpyright-inlay-hints-variable-types t)
+   ("basedpyright.analysis.inlayHints.callArgumentNames" lsp-pyright-basedpyright-inlay-hints-call-argument-names t)
+   ("basedpyright.analysis.inlayHints.functionReturnTypes" lsp-pyright-basedpyright-inlay-hints-function-return-types t)
+   ("basedpyright.analysis.inlayHints.genericTypes" lsp-pyright-basedpyright-inlay-hints-generic-types t)
    ("python.analysis.typeCheckingMode" lsp-pyright-type-checking-mode)
    ("python.analysis.autoImportCompletions" lsp-pyright-auto-import-completions t)
    ("python.analysis.diagnosticMode" lsp-pyright-diagnostic-mode)
