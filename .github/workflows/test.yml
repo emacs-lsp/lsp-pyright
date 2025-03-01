@@ -14,7 +14,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        emacs-version: [27.2, 28.2, 29.4, 30.1]
+        emacs-version: [28.2, 29.4, 30.1]
         experimental: [false]
         include:
           - os: ubuntu-latest
@@ -26,9 +26,6 @@ jobs:
           - os: windows-latest
             emacs-version: snapshot
             experimental: true
-        exclude:
-          - os: macos-latest
-            emacs-version: 27.2
 
     steps:
       - name: setenv
