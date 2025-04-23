@@ -1,3 +1,5 @@
+;; -*- mode: eask; lexical-binding: t -*-
+
 (package "lsp-pyright"
          "0.2.0"
          "Python LSP client using Pyright")
