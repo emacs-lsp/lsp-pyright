@@ -314,8 +314,7 @@ Current LSP WORKSPACE should be passed in."
  (make-lsp-client
   :new-connection
   (lsp-tramp-connection (lambda ()
-                          (cons (executable-find (concat lsp-pyright-langserver-command "-langserver") t)
-                                lsp-pyright-langserver-command-args)))
+                          (cons (concat lsp-pyright-langserver-command "-langserver") lsp-pyright-langserver-command-args)))
   :major-modes '(python-mode python-ts-mode)
   :server-id 'pyright-remote
   :multi-root lsp-pyright-multi-root
